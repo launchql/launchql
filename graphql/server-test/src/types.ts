@@ -24,6 +24,11 @@ export interface ServerOptions {
    */
   useRouting?: boolean;
   /**
+   * How many proxies to believe in `X-Forwarded-For`, counted from the right
+   * (defaults to 0: the socket peer). Production-server suites only.
+   */
+  trustedProxyHops?: number;
+  /**
    * API configuration options for the GraphQL server.
    * These options control how the server handles requests and which features are enabled.
    *

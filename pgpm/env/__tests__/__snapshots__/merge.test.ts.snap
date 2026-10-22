@@ -56,7 +56,7 @@ exports[`getEnvOptions merges defaults, config, env, and overrides 1`] = `
     "host": "localhost",
     "port": 9999,
     "strictAuth": false,
-    "trustProxy": false,
+    "trustedProxyHops": 0,
   },
   "smtp": {
     "debug": false,

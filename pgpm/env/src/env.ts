@@ -42,7 +42,7 @@ export const getEnvVars = (env: NodeJS.ProcessEnv = process.env): PgpmOptions =>
 
     PORT,
     SERVER_HOST,
-    SERVER_TRUST_PROXY,
+    TRUSTED_PROXY_HOPS,
     SERVER_ORIGIN,
     SERVER_STRICT_AUTH,
 
@@ -124,7 +124,7 @@ export const getEnvVars = (env: NodeJS.ProcessEnv = process.env): PgpmOptions =>
     server: {
       ...(PORT && { port: parseEnvNumber(PORT) }),
       ...(SERVER_HOST && { host: SERVER_HOST }),
-      ...(SERVER_TRUST_PROXY && { trustProxy: parseEnvBoolean(SERVER_TRUST_PROXY) }),
+      ...(TRUSTED_PROXY_HOPS && { trustedProxyHops: parseEnvNumber(TRUSTED_PROXY_HOPS) }),
       ...(SERVER_ORIGIN && { origin: SERVER_ORIGIN }),
       ...(SERVER_STRICT_AUTH && { strictAuth: parseEnvBoolean(SERVER_STRICT_AUTH) }),
     },

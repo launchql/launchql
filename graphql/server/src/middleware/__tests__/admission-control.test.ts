@@ -46,9 +46,10 @@ interface FakeReqInit {
   databaseId?: string;
   protection?: RequestProtection;
   ip?: string;
+  /** What `clientIpMiddleware` resolved for this request, if it ran. */
+  clientIp?: string;
   forwardedFor?: string;
   path?: string;
-  trustProxy?: boolean;
 }
 
 const fakeReq = (init: FakeReqInit = {}): Request =>
@@ -60,7 +61,7 @@ const fakeReq = (init: FakeReqInit = {}): Request =>
     requestProtection: init.protection,
     headers: init.forwardedFor ? { 'x-forwarded-for': init.forwardedFor } : {},
     socket: { remoteAddress: init.ip ?? '10.0.0.1' },
-    app: { get: (key: string) => (key === 'trust proxy' ? init.trustProxy : undefined) }
+    clientIp: init.clientIp
   }) as unknown as Request;
 
 /** Send one request through the middleware, resolving when it settles. */
@@ -76,7 +77,7 @@ const send = (
 
 describe('createAdmissionControlMiddleware', () => {
   it('admits a request under both bounds', async () => {
-    const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+    const middleware = createAdmissionControlMiddleware();
     const { next, res, done } = send(middleware, fakeReq());
     await done;
 
@@ -85,7 +86,7 @@ describe('createAdmissionControlMiddleware', () => {
   });
 
   it('falls back to platform defaults when protection did not resolve', async () => {
-    const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+    const middleware = createAdmissionControlMiddleware();
     const { next, done } = send(middleware, fakeReq({ protection: undefined }));
     await done;
 
@@ -94,7 +95,7 @@ describe('createAdmissionControlMiddleware', () => {
 
   describe('per-caller rate', () => {
     it('refuses the caller past rateLimitRpm + rateLimitBurst with a 429', async () => {
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+      const middleware = createAdmissionControlMiddleware();
       const bounds = protection({ rateLimitRpm: 1, rateLimitBurst: 1 });
 
       for (let i = 0; i < 2; i++) {
@@ -114,7 +115,7 @@ describe('createAdmissionControlMiddleware', () => {
     });
 
     it('does not spend one caller\u2019s budget on another', async () => {
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+      const middleware = createAdmissionControlMiddleware();
       const bounds = protection({ rateLimitRpm: 1, rateLimitBurst: 0 });
 
       const first = send(middleware, fakeReq({ protection: bounds, ip: '10.0.0.1' }));
@@ -131,7 +132,7 @@ describe('createAdmissionControlMiddleware', () => {
     });
 
     it('keys separate routes separately', async () => {
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+      const middleware = createAdmissionControlMiddleware();
       const bounds = protection({ rateLimitRpm: 1, rateLimitBurst: 0 });
 
       const graphql = send(middleware, fakeReq({ protection: bounds, path: '/graphql' }));
@@ -143,15 +144,16 @@ describe('createAdmissionControlMiddleware', () => {
       expect(fn.next).toHaveBeenCalledTimes(1);
     });
 
-    it('cannot be evaded with a forged X-Forwarded-For', async () => {
-      // One trusted hop: our ingress appended 203.0.113.7, and the caller's own
-      // leftmost entry changes every request.
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 1 });
+    it('keys on the address clientIpMiddleware resolved, not a forged X-Forwarded-For', async () => {
+      // Behind one trusted hop the middleware resolved 203.0.113.7 (the entry
+      // our ingress appended); the caller's own leftmost entry changes every
+      // request and must not open a fresh budget.
+      const middleware = createAdmissionControlMiddleware();
       const bounds = protection({ rateLimitRpm: 1, rateLimitBurst: 0 });
 
       const first = send(
         middleware,
-        fakeReq({ protection: bounds, forwardedFor: '9.9.9.9, 203.0.113.7' })
+        fakeReq({ protection: bounds, clientIp: '203.0.113.7', forwardedFor: '9.9.9.9, 203.0.113.7' })
       );
       await first.done;
       first.res.emit('finish');
@@ -159,28 +161,23 @@ describe('createAdmissionControlMiddleware', () => {
 
       const forged = send(
         middleware,
-        fakeReq({ protection: bounds, forwardedFor: '8.8.8.8, 203.0.113.7' })
+        fakeReq({ protection: bounds, clientIp: '203.0.113.7', forwardedFor: '8.8.8.8, 203.0.113.7' })
       );
       await forged.done;
       expect(forged.next).not.toHaveBeenCalled();
       expect(forged.res.captured.status).toBe(429);
     });
 
-    it('trusts one hop when Express is configured to trust a proxy', async () => {
+    it('falls back to the socket peer, never the header, when no address was resolved', async () => {
       const middleware = createAdmissionControlMiddleware();
       const bounds = protection({ rateLimitRpm: 1, rateLimitBurst: 0 });
 
-      const first = send(
-        middleware,
-        fakeReq({ protection: bounds, trustProxy: true, forwardedFor: '9.9.9.9, 203.0.113.7' })
-      );
+      const first = send(middleware, fakeReq({ protection: bounds, forwardedFor: '9.9.9.9' }));
       await first.done;
       first.res.emit('finish');
+      expect(first.next).toHaveBeenCalledTimes(1);
 
-      const second = send(
-        middleware,
-        fakeReq({ protection: bounds, trustProxy: true, forwardedFor: '7.7.7.7, 203.0.113.7' })
-      );
+      const second = send(middleware, fakeReq({ protection: bounds, forwardedFor: '7.7.7.7' }));
       await second.done;
       expect(second.res.captured.status).toBe(429);
     });
@@ -188,7 +185,7 @@ describe('createAdmissionControlMiddleware', () => {
 
   describe('per-database concurrency', () => {
     it('refuses with a 429 once the width bound is reached and waiting is off', async () => {
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+      const middleware = createAdmissionControlMiddleware();
       const bounds = protection({ maxConcurrentRequests: 1, maxQueueWaitMs: 0 });
 
       const held = send(middleware, fakeReq({ protection: bounds, ip: '10.0.0.1' }));
@@ -205,7 +202,7 @@ describe('createAdmissionControlMiddleware', () => {
     });
 
     it('admits a queued request when the in-flight one finishes', async () => {
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+      const middleware = createAdmissionControlMiddleware();
       const bounds = protection({ maxConcurrentRequests: 1, maxQueueWaitMs: 1_000 });
 
       const held = send(middleware, fakeReq({ protection: bounds, ip: '10.0.0.1' }));
@@ -222,7 +219,7 @@ describe('createAdmissionControlMiddleware', () => {
     });
 
     it('releases the slot when the client hangs up mid-flight', async () => {
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+      const middleware = createAdmissionControlMiddleware();
       const bounds = protection({ maxConcurrentRequests: 1, maxQueueWaitMs: 0 });
 
       const aborted = send(middleware, fakeReq({ protection: bounds, ip: '10.0.0.1' }));
@@ -235,7 +232,7 @@ describe('createAdmissionControlMiddleware', () => {
     });
 
     it('refuses a request that waited out maxQueueWaitMs', async () => {
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+      const middleware = createAdmissionControlMiddleware();
       const bounds = protection({ maxConcurrentRequests: 1, maxQueueWaitMs: 20 });
 
       const held = send(middleware, fakeReq({ protection: bounds, ip: '10.0.0.1' }));
@@ -254,7 +251,7 @@ describe('createAdmissionControlMiddleware', () => {
     });
 
     it('bounds each database separately', async () => {
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+      const middleware = createAdmissionControlMiddleware();
       const bounds = protection({ maxConcurrentRequests: 1, maxQueueWaitMs: 0 });
 
       const first = send(middleware, fakeReq({ protection: bounds, databaseId: 'db-a' }));
@@ -270,7 +267,7 @@ describe('createAdmissionControlMiddleware', () => {
     });
 
     it('does not leave a slot held when the response both finishes and closes', async () => {
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+      const middleware = createAdmissionControlMiddleware();
       const bounds = protection({ maxConcurrentRequests: 2, maxQueueWaitMs: 0 });
 
       const first = send(middleware, fakeReq({ protection: bounds, ip: '10.0.0.1' }));
@@ -308,7 +305,7 @@ describe('createAdmissionControlMiddleware', () => {
     });
 
     it('counts a rate-limit refusal keyed by tenant, route and anonymised source', async () => {
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+      const middleware = createAdmissionControlMiddleware();
       const bounds = protection({ rateLimitRpm: 1, rateLimitBurst: 1 });
       for (let i = 0; i < 2; i++) {
         const admitted = send(middleware, fakeReq({ protection: bounds, ip: '203.0.113.7' }));
@@ -335,7 +332,7 @@ describe('createAdmissionControlMiddleware', () => {
     });
 
     it('distinguishes an immediate concurrency refusal from a queue timeout', async () => {
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+      const middleware = createAdmissionControlMiddleware();
       const immediate = protection({ maxConcurrentRequests: 1, maxQueueWaitMs: 0 });
       const held = send(middleware, fakeReq({ protection: immediate, ip: '10.0.0.1' }));
       await held.done;
@@ -360,7 +357,7 @@ describe('createAdmissionControlMiddleware', () => {
           throw new Error('recorder exploded');
         }
       } as unknown as RefusalRecorder);
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+      const middleware = createAdmissionControlMiddleware();
       const bounds = protection({ rateLimitRpm: 1, rateLimitBurst: 1 });
       for (let i = 0; i < 2; i++) {
         const admitted = send(middleware, fakeReq({ protection: bounds }));
@@ -375,7 +372,7 @@ describe('createAdmissionControlMiddleware', () => {
     });
 
     it('does not record admitted requests', async () => {
-      const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
+      const middleware = createAdmissionControlMiddleware();
       const { done, res } = send(middleware, fakeReq());
       await done;
       res.emit('finish');

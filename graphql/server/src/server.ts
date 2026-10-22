@@ -1,11 +1,16 @@
 import { createCsrfMiddleware } from '@constructive-io/csrf';
 import type { RefusalRecorder } from '@constructive-io/express-context';
-import { createContextMiddleware, createDefaultRegistry, requestIdMiddleware } from '@constructive-io/express-context';
+import {
+  clientIpMiddleware,
+  createContextMiddleware,
+  createDefaultRegistry,
+  requestIdMiddleware
+} from '@constructive-io/express-context';
 import { getEnvOptions } from '@constructive-io/graphql-env';
 import type { ConstructiveOptions } from '@constructive-io/graphql-types';
 import { middleware as parseDomains } from '@constructive-io/url-domains';
 import { Logger } from '@pgpmjs/logger';
-import { healthz, poweredBy, svcCache, trustProxy } from '@pgpmjs/server-utils';
+import { healthz, poweredBy, svcCache } from '@pgpmjs/server-utils';
 import { PgpmOptions } from '@pgpmjs/types';
 import cookieParser from 'cookie-parser';
 import express, { Express, NextFunction, Request, RequestHandler, Response } from 'express';
@@ -14,7 +19,6 @@ import graphqlUpload from 'graphql-upload';
 import type { Server as HttpServer } from 'http';
 import { Pool, PoolClient } from 'pg';
 import { getPgPool } from 'pg-cache';
-import requestIp from 'request-ip';
 
 import { createAgenticRouter } from './agentic';
 import { closeDebugDatabasePools } from './diagnostics/debug-db-snapshot';
@@ -138,7 +142,11 @@ class Server {
       });
     }
     app.use(favicon);
-    trustProxy(app, effectiveOpts.server.trustProxy);
+    // Express's own forwarded-header handling (req.ip, req.protocol, req.hostname)
+    // believes exactly as many hops as the deployment declares; a predicate that
+    // trusts every peer would let a direct caller forge all three.
+    const trustedProxyHops = effectiveOpts.server?.trustedProxyHops ?? 0;
+    app.set('trust proxy', trustedProxyHops > 0 ? trustedProxyHops : false);
     // Warn if a global CORS override is set in production
     const fallbackOrigin = effectiveOpts.server?.origin?.trim();
     if (fallbackOrigin && process.env.NODE_ENV === 'production') {
@@ -162,7 +170,7 @@ class Server {
     // Rewrite Content-Type after graphql-upload so grafserv accepts the request
     app.use('/graphql', multipartBridge);
     app.use(parseDomains() as RequestHandler);
-    app.use(requestIp.mw());
+    app.use(clientIpMiddleware(trustedProxyHops));
     app.use(requestIdMiddleware());
     app.use(requestLogger);
     app.use(api);

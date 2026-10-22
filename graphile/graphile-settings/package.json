@@ -72,7 +72,6 @@
     "pg-query-context": "workspace:^",
     "pg-sql2": "5.0.1",
     "postgraphile": "5.1.4",
-    "request-ip": "^3.3.0",
     "tamedevil": "0.1.1"
   },
   "devDependencies": {
@@ -80,7 +79,6 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.6",
     "@types/pg": "^8.20.4",
-    "@types/request-ip": "^0.0.41",
     "graphile-test": "workspace:^",
     "makage": "^0.8.0",
     "nodemon": "^3.1.14",

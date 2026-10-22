@@ -22,10 +22,3 @@ export const poweredBy = (name: string) => {
   };
 };
 
-export const trustProxy = (app: Express, trustProxy?: boolean): void => {
-  if (trustProxy) {
-    app.set('trust proxy', (ip: string) => {
-      return true;
-    });
-  }
-};

@@ -3,11 +3,10 @@ import './types'; // for Request type
 import { errors } from '@constructive-io/errors';
 import type { AdmissionLease, RequestProtection } from '@constructive-io/express-context';
 import {
-  clientIpFrom,
+  clientIpOf,
   ConcurrencyLimiter,
   DEFAULT_REQUEST_PROTECTION,
-  RateWindow,
-  trustedProxyHops
+  RateWindow
 } from '@constructive-io/express-context';
 import { Logger } from '@pgpmjs/logger';
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
@@ -63,33 +62,6 @@ const routeOf = (req: Request): string => `${req.method} ${req.baseUrl}${req.pat
 /** Seconds for a `Retry-After` header — the smallest honest whole number. */
 const retryAfterSeconds = (ms: number): string => String(Math.max(Math.ceil(ms / 1000), 1));
 
-export interface AdmissionControlOptions {
-  /**
-   * How many proxies of our own sit in front of the server. Defaults to
-   * `TRUSTED_PROXY_HOPS`, then to 1 when Express is configured to trust a
-   * proxy at all; see `clientIpFrom` for why guessing higher is unsafe.
-   */
-  trustedProxyHops?: number;
-}
-
-/**
- * How far back through `X-Forwarded-For` to believe.
- *
- * `req.clientIp` and `req.ip` are both unusable as a limiter key here: this
- * server sets `trust proxy` to a predicate that returns true unconditionally,
- * and `request-ip` reads the *leftmost* forwarded entry regardless — so either
- * one hands a caller a fresh key per request for the cost of a header. The
- * fallback to 1 hop exists because the opposite failure is just as bad: behind
- * an ingress with no hop count configured, every caller resolves to the
- * ingress's address and one abuser throttles the whole tenant.
- */
-const resolveHops = (req: Request, configured?: number): number => {
-  if (typeof configured === 'number') return configured;
-  const fromEnv = trustedProxyHops();
-  if (fromEnv > 0) return fromEnv;
-  return req.app?.get('trust proxy') ? 1 : 0;
-};
-
 /**
  * Rate-limit callers per route, then admit at most `maxConcurrentRequests` of
  * them per database into the handler chain.
@@ -99,9 +71,7 @@ const resolveHops = (req: Request, configured?: number): number => {
  * matters: the rate check is O(1) and runs first, so a flood is refused
  * without ever occupying a concurrency slot or waiting in its queue.
  */
-export const createAdmissionControlMiddleware = (
-  options: AdmissionControlOptions = {}
-): RequestHandler => {
+export const createAdmissionControlMiddleware = (): RequestHandler => {
   const concurrency = new ConcurrencyLimiter();
   const rate = new RateWindow(RATE_WINDOW_MS);
 
@@ -110,8 +80,7 @@ export const createAdmissionControlMiddleware = (
     const databaseId = req.databaseId ?? UNKNOWN_DATABASE;
 
     // ─── Per-caller rate ────────────────────────────────────────────────────
-    const hops = resolveHops(req, options.trustedProxyHops);
-    const ip = clientIpFrom(req, hops);
+    const ip = clientIpOf(req);
     const rateKey = `${databaseId}\u0000${ip}\u0000${routeOf(req)}`;
     if (!rate.admit(rateKey, protection.rateLimitRpm, protection.rateLimitBurst)) {
       log.warn(`[admission] rate limit: database=${databaseId} ip=${ip} route=${routeOf(req)}`);
