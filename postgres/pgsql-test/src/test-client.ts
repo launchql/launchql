@@ -44,8 +44,14 @@ const describeExpected = (expected?: ExpectedPgError): string => {
   });
 };
 
-const matchesText = (text: string, pattern: string | RegExp): boolean =>
-  typeof pattern === 'string' ? text.includes(pattern) : pattern.test(text);
+const matchesText = (text: string, pattern: string | RegExp): boolean => {
+  if (typeof pattern === 'string') return text.includes(pattern);
+  pattern.lastIndex = 0;
+  return pattern.test(text);
+};
+
+const describeError = (err: any): string =>
+  [err?.code, String(err?.message ?? err).split('\n')[0]].filter(Boolean).join(': ');
 
 const matchesExpected = (err: any, expected?: ExpectedPgError): boolean => {
   if (expected === undefined) return true;
@@ -141,17 +147,27 @@ export class PgTestClient extends PgClient {
     } catch (err) {
       failed = true;
       caught = err;
-    } finally {
+    }
+
+    try {
       await this.rollback(EXPECT_ERROR_SAVEPOINT);
       await this.client.query(`RELEASE SAVEPOINT "${EXPECT_ERROR_SAVEPOINT}";`);
+    } catch (cleanupError) {
+      const outcome = failed ? `run() failed with ${describeError(caught)}` : 'run() succeeded';
+      throw new Error(
+        `[pgsql-test] expectError: could not roll back its savepoint (${describeError(cleanupError)}); ${outcome}. ` +
+          'Did run() end the transaction or run on another client?',
+        { cause: failed ? caught : cleanupError }
+      );
     }
 
     if (!failed) {
       throw new Error(`[pgsql-test] expectError: expected ${describeExpected(expected)}, but the statement succeeded`);
     }
     if (!matchesExpected(caught, expected)) {
-      const got = [caught?.code, String(caught?.message ?? caught).split('\n')[0]].filter(Boolean).join(': ');
-      throw new Error(`[pgsql-test] expectError: expected ${describeExpected(expected)}, got ${got}`, { cause: caught });
+      throw new Error(`[pgsql-test] expectError: expected ${describeExpected(expected)}, got ${describeError(caught)}`, {
+        cause: caught
+      });
     }
     return caught as E;
   }
