@@ -98,4 +98,38 @@ describe('PgTestClient.expectError', () => {
     const { flag } = await pg.one(`SELECT current_setting('app.flag', true) AS flag`);
     expect(flag || null).toBeNull();
   });
+
+  it('reuses a global RegExp across calls', async () => {
+    const divide = /division by zero/g;
+    await pg.expectError(() => pg.query(`SELECT 1/0`), divide);
+    await pg.expectError(() => pg.query(`SELECT 1/0`), divide);
+    await pg.expectError(() => pg.query(`SELECT 1/0`), { message: divide });
+  });
+
+  it('reports both errors when run() ends the transaction and the savepoint cannot be rolled back', async () => {
+    const err = await pg
+      .expectError(async () => {
+        await pg.client.query('ROLLBACK');
+        throw new Error('original failure');
+      }, /original failure/)
+      .catch((e: Error) => e);
+
+    // restore the per-test transaction that run() ended, so afterEach can roll it back
+    await pg.beforeEach();
+
+    expect((err as Error).message).toMatch(/\[pgsql-test\] expectError: could not roll back its savepoint/);
+    expect((err as Error).message).toMatch(/ROLLBACK TO SAVEPOINT can only be used in transaction blocks/);
+    expect((err as Error).message).toMatch(/original failure/);
+    expect(((err as Error).cause as Error).message).toBe('original failure');
+  });
+
+  it('reports the cleanup failure when run() succeeds but ends the transaction', async () => {
+    const err = await pg
+      .expectError(() => pg.client.query('COMMIT'), /anything/)
+      .catch((e: Error) => e);
+
+    await pg.beforeEach();
+
+    expect((err as Error).message).toMatch(/could not roll back its savepoint .*; run\(\) succeeded/);
+  });
 });
