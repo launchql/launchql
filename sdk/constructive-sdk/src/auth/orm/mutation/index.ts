@@ -26,6 +26,7 @@ import type {
   EnableEmailMfaInput,
   EnableSmsMfaInput,
   EnableTotpInput,
+  ExchangeNativeHandoffInput,
   ExtendTokenExpiresInput,
   ForgotPasswordInput,
   GenerateBackupCodesInput,
@@ -81,6 +82,7 @@ import type {
   EnableEmailMfaPayload,
   EnableSmsMfaPayload,
   EnableTotpPayload,
+  ExchangeNativeHandoffPayload,
   ExtendTokenExpiresPayload,
   ForgotPasswordPayload,
   GenerateBackupCodesPayload,
@@ -136,6 +138,7 @@ import type {
   EnableEmailMfaPayloadSelect,
   EnableSmsMfaPayloadSelect,
   EnableTotpPayloadSelect,
+  ExchangeNativeHandoffPayloadSelect,
   ExtendTokenExpiresPayloadSelect,
   ForgotPasswordPayloadSelect,
   GenerateBackupCodesPayloadSelect,
@@ -230,6 +233,9 @@ export interface EnableSmsMfaVariables {
 }
 export interface EnableTotpVariables {
   input: EnableTotpInput;
+}
+export interface ExchangeNativeHandoffVariables {
+  input: ExchangeNativeHandoffInput;
 }
 export interface ExtendTokenExpiresVariables {
   input: ExtendTokenExpiresInput;
@@ -899,6 +905,35 @@ export function createMutationOperations(client: OrmClient) {
           ],
           connectionFieldsMap,
           'EnableTotpPayload'
+        ),
+      }),
+    exchangeNativeHandoff: <S extends ExchangeNativeHandoffPayloadSelect>(
+      args: ExchangeNativeHandoffVariables,
+      options: {
+        select: S;
+      } & StrictSelect<S, ExchangeNativeHandoffPayloadSelect>
+    ) =>
+      new QueryBuilder<{
+        exchangeNativeHandoff: InferSelectResult<ExchangeNativeHandoffPayload, S> | null;
+      }>({
+        client,
+        operation: 'mutation',
+        operationName: 'ExchangeNativeHandoff',
+        fieldName: 'exchangeNativeHandoff',
+        ...buildCustomDocument(
+          'mutation',
+          'ExchangeNativeHandoff',
+          'exchangeNativeHandoff',
+          options.select,
+          args,
+          [
+            {
+              name: 'input',
+              type: 'ExchangeNativeHandoffInput!',
+            },
+          ],
+          connectionFieldsMap,
+          'ExchangeNativeHandoffPayload'
         ),
       }),
     extendTokenExpires: <S extends ExtendTokenExpiresPayloadSelect>(

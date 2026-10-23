@@ -55,6 +55,7 @@ export * from './useDisconnectAccountMutation';
 export * from './useEnableEmailMfaMutation';
 export * from './useEnableSmsMfaMutation';
 export * from './useEnableTotpMutation';
+export * from './useExchangeNativeHandoffMutation';
 export * from './useExtendTokenExpiresMutation';
 export * from './useForgotPasswordMutation';
 export * from './useGenerateBackupCodesMutation';
