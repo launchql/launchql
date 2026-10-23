@@ -1,6 +1,7 @@
 import { type ConfirmPreviewTable, filterInternalPolicies, type HarnessTool } from '@agentic-kit/harness';
 import { z } from 'zod';
 
+import { buildBlueprint } from '../blueprint-construction';
 import type { ModulesClient, ProjectContext } from '../context';
 import { resolveProjectContext } from '../context';
 
@@ -341,24 +342,11 @@ export const applyTemplateTool: HarnessTool<typeof ApplyTemplateZod, TemplateDet
       const blueprintId = copyResult.copyTemplateToBlueprint?.result;
       if (!blueprintId) throw new Error('Failed to copy template');
 
-      const constructResult = await modules.mutation
-        .constructBlueprint({ input: { blueprintId, schemaId } }, { select: { result: true } })
-        .unwrap();
-
-      const constructionId = constructResult.constructBlueprint?.result;
-      if (!constructionId) throw new Error('constructBlueprint returned no construction id');
-
-      const constructions = await modules.blueprintConstruction
-        .findMany({
-          where: { id: { equalTo: constructionId } },
-          first: 1,
-          select: { tableMap: true },
-        })
-        .unwrap();
-      const tableMap = (constructions?.blueprintConstructions?.nodes?.[0]?.tableMap ?? {}) as Record<
-        string,
-        string
-      >;
+      const tableMap = await buildBlueprint(
+        modules,
+        { blueprintId, schemaId },
+        { signal: ctx.signal },
+      );
 
       const createdCount = Object.keys(tableMap).length;
       return done(

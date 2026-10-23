@@ -1,5 +1,6 @@
 import { expandBlueprintDefaults, type HarnessTool } from '@agentic-kit/harness';
 
+import { buildBlueprint } from '../blueprint-construction';
 import { resolveProjectContext } from '../context';
 import { resolveSchema, resolveTable } from '../schema-resolve';
 import { type AddRelationParams as Params, AddRelationZod, buildRelation } from './add-relation-schema';
@@ -72,9 +73,7 @@ export const addRelationTool: HarnessTool<typeof AddRelationZod, AddRelationDeta
       const blueprintId = created.createBlueprint?.blueprint?.id;
       if (!blueprintId) throw new Error('Failed to create relation blueprint');
 
-      await modules.mutation
-        .constructBlueprint({ input: { blueprintId, schemaId } }, { select: { result: true } })
-        .unwrap();
+      await buildBlueprint(modules, { blueprintId, schemaId }, { signal: ctx.signal });
     } catch (err) {
       return fail(`Failed to add relation: ${err instanceof Error ? err.message : String(err)}`);
     }

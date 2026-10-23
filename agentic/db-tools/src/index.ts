@@ -54,6 +54,14 @@ export function createConstructiveDbTools(host: ToolsHost): readonly AnyHarnessT
 }
 
 export {
+  buildBlueprint,
+  CONSTRUCTION_DEADLINE_MS,
+  type ConstructionTableMap,
+  readConstructionFailure,
+  waitForConstruction,
+  type WaitForConstructionOptions,
+} from './blueprint-construction';
+export {
   CONTEXT_ENV_KEYS,
   CONTEXT_ENV_PREFIX,
   type ContextEnvKey,

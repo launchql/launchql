@@ -6,6 +6,7 @@ import {
   type HarnessTool,
 } from '@agentic-kit/harness';
 
+import { buildBlueprint } from '../blueprint-construction';
 import { resolveProjectContext } from '../context';
 
 type Params = Blueprint;
@@ -93,12 +94,7 @@ export const provisionBlueprintTool: HarnessTool<typeof BlueprintZod, ProvisionB
         const blueprintId = createResult.createBlueprint?.blueprint?.id;
         if (!blueprintId) throw new Error('Failed to create blueprint');
 
-        await modules.mutation
-          .constructBlueprint(
-            { input: { blueprintId, schemaId } },
-            { select: { result: true } },
-          )
-          .unwrap();
+        await buildBlueprint(modules, { blueprintId, schemaId }, { signal: ctx.signal });
 
         const relations = params.definition.relations ?? [];
         const details: ProvisionBlueprintDetails = {
