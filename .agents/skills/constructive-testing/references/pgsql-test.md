@@ -86,19 +86,16 @@ expect(result.rows).toHaveLength(1);
 
 ## Handling Expected Failures (Savepoint Pattern)
 
-When testing operations that should fail, use savepoints to avoid "current transaction is aborted" errors:
+When testing operations that should fail, use `db.expectError()` to avoid "current transaction is aborted" errors (see [pgsql-test-exceptions.md](./pgsql-test-exceptions.md)):
 
 ```typescript
 it('rejects unauthorized access', async () => {
   db.setContext({ role: 'anonymous' });
 
-  await db.savepoint('unauthorized_access');
-
-  await expect(
-    db.query('INSERT INTO app.private_data (secret) VALUES ($1)', ['hack'])
-  ).rejects.toThrow(/permission denied/);
-
-  await db.rollback('unauthorized_access');
+  await db.expectError(
+    () => db.query('INSERT INTO app.private_data (secret) VALUES ($1)', ['hack']),
+    /permission denied/
+  );
 
   // Connection still works
   const result = await db.query('SELECT 1 as ok');

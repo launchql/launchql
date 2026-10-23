@@ -76,6 +76,7 @@ Choose the **highest-level framework** that fits your test scenario:
 2. **Never create `new pg.Pool()` or `new pg.Client()` in tests** — use `getConnections()`
 3. **Never manually create/drop databases** — the framework handles this
 4. **Never skip hooks** — tests will leak state
+5. **Assert expected failures with `db.expectError(() => db.query(...), /pattern/)`** — it wraps the statement in a savepoint so the transaction stays usable. Never write a local `expectRejects`-style helper or raw `SAVEPOINT` / `ROLLBACK TO SAVEPOINT` SQL ([pgsql-test-exceptions.md](./references/pgsql-test-exceptions.md))
 
 ## Reference Guide
 
@@ -86,7 +87,7 @@ Choose the **highest-level framework** that fits your test scenario:
 | [pgsql-test.md](./references/pgsql-test.md) | pgsql-test overview and setup | Getting started with PostgreSQL testing |
 | [pgsql-test-rls.md](./references/pgsql-test-rls.md) | RLS policy testing | Testing row-level security, user isolation |
 | [pgsql-test-seeding.md](./references/pgsql-test-seeding.md) | Test data seeding | loadJson, loadSql, loadCsv fixtures |
-| [pgsql-test-exceptions.md](./references/pgsql-test-exceptions.md) | Exception handling | Testing operations that should fail |
+| [pgsql-test-exceptions.md](./references/pgsql-test-exceptions.md) | `db.expectError()` | Testing operations that should fail (RLS denials, constraint/permission errors, raised errors) |
 | [pgsql-test-snapshot.md](./references/pgsql-test-snapshot.md) | Snapshot testing | pruneIds, pruneDates, deterministic assertions |
 | [pgsql-test-helpers.md](./references/pgsql-test-helpers.md) | Helper utilities | Common test helper functions |
 | [pgsql-test-jwt-context.md](./references/pgsql-test-jwt-context.md) | JWT context testing | Setting JWT claims, testing authenticated queries |
