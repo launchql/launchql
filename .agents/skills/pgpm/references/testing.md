@@ -76,6 +76,7 @@ Returns:
 | `db.query(sql, params?)` | Execute SQL query |
 | `db.beforeEach()` | Start savepoint (call in beforeEach) |
 | `db.afterEach()` | Rollback to savepoint (call in afterEach) |
+| `db.expectError(fn, pattern?)` | Assert `fn` fails (message substring/RegExp or `{ code }`), keeping the transaction usable |
 | `db.setContext(context)` | Set session context variables |
 | `db.getPool()` | Get underlying pg Pool |
 
@@ -285,6 +286,7 @@ beforeAll(async () => {
 | "Database does not exist" | Check PGDATABASE env var or use `pgpm env` |
 | Tests hang | Ensure `teardown()` is called in afterAll |
 | Data leaking between tests | Add `beforeEach/afterEach` savepoint calls |
+| `current transaction is aborted` | Assert the failing statement with `db.expectError()` |
 | Permission denied | Check database user has CREATE DATABASE permission |
 | Slow tests | Use savepoints instead of recreating database per test |
 

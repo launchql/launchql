@@ -1,222 +1,174 @@
 ---
 name: pgsql-test-exceptions
-description: Handle PostgreSQL aborted transactions when testing operations that should fail. Use when testing RLS policy violations, constraint errors, permission denied errors, or any expected database exceptions. Essential for security testing.
+description: Assert that a statement fails without poisoning the test transaction — use db.expectError() from pgsql-test. Use when testing RLS policy violations, constraint errors, permission denied errors, raised application errors, or any expected database exception. Essential for security testing.
 compatibility: Node.js 18+, pgsql-test package, PostgreSQL
 metadata:
   author: constructive-io
-  version: "1.0.0"
+  version: "2.0.0"
 ---
 
-# Testing Exceptions and Aborted Transactions
+# Testing Exceptions: `db.expectError()`
 
-Handle PostgreSQL's transaction abort behavior when testing operations that should fail. This is essential for security testing where you verify that unauthorized operations are rejected.
+**Use `db.expectError()` for every statement that is supposed to fail.** Do not
+write your own `expectRejects` / `expectRefused` / `expectRaise` helper, and do
+not hand-roll `SAVEPOINT` / `ROLLBACK TO SAVEPOINT` around `expect(...).rejects`.
+The helper already exists on every `PgTestClient` (`pg`, `db`, and the clients
+handed out by `supabase-test`, `drizzle-orm-test`, `graphile-test`, …).
 
-## When to Apply
+## The Problem It Solves
 
-Use this skill when:
-- Testing RLS policy violations (user can't access other users' data)
-- Testing constraint violations (unique, foreign key, check)
-- Testing permission denied errors
-- Testing any operation that should throw an error
-- Verifying database state after a failed operation
-
-## The Problem
-
-When PostgreSQL encounters an error inside a transaction, it aborts the entire transaction. The connection rejects all further commands until you explicitly end the transaction:
+When a statement fails inside a transaction, PostgreSQL aborts the whole
+transaction. Every test runs inside one (`db.beforeEach()`), so after a naive
+`await expect(db.query(...)).rejects.toThrow()` the next query fails with:
 
 ```
 current transaction is aborted, commands ignored until end of transaction block
 ```
 
-This breaks naive exception testing:
-
-```typescript
-// THIS WILL FAIL
-it('users cannot insert pets for other users', async () => {
-  db.setContext({
-    role: 'authenticated',
-    'jwt.claims.user_id': bob
-  });
-
-  await expect(
-    db.query(`INSERT INTO pets (name, owner_id) VALUES ('Fake', $1)`, [alice])
-  ).rejects.toThrow(/violates row-level security/);
-
-  // ERROR: transaction is aborted, this query fails!
-  const count = await db.query(`SELECT COUNT(*) FROM pets WHERE owner_id = $1`, [alice]);
-});
-```
-
-## The Solution: Savepoints
-
-Create a savepoint before the failing operation, then roll back to it:
+## Usage
 
 ```typescript
 it('users cannot insert pets for other users', async () => {
-  db.setContext({
-    role: 'authenticated',
-    'jwt.claims.user_id': bob
-  });
+  db.setContext({ role: 'authenticated', 'jwt.claims.user_id': bob });
 
-  // 1. Create savepoint before expected failure
-  await db.savepoint('insert_attempt');
+  await db.expectError(
+    () => db.query(`INSERT INTO pets (name, owner_id) VALUES ('Fake', $1)`, [alice]),
+    /violates row-level security/
+  );
 
-  // 2. Test the operation that should fail
-  await expect(
-    db.query(`INSERT INTO pets (name, owner_id) VALUES ('Fake', $1)`, [alice])
-  ).rejects.toThrow(/violates row-level security/);
-
-  // 3. Roll back to clear the error state
-  await db.rollback('insert_attempt');
-
-  // 4. Continue with verification queries
-  const count = await db.query(`SELECT COUNT(*) FROM pets WHERE owner_id = $1`, [alice]);
-  expect(parseInt(count.rows[0].count)).toBe(2);
+  // The transaction is still usable — verify the attack had no effect
+  const count = await db.one(`SELECT count(*) FROM pets WHERE owner_id = $1`, [alice]);
+  expect(Number(count.count)).toBe(2);
 });
 ```
 
-## Pattern Template
+### Signature
 
 ```typescript
-// 1. Create savepoint
-await db.savepoint('my_savepoint_name');
-
-// 2. Execute operation that should fail
-await expect(
-  db.query(`...`)
-).rejects.toThrow(/expected error pattern/);
-
-// 3. Roll back to savepoint
-await db.rollback('my_savepoint_name');
-
-// 4. Continue with additional queries
-const result = await db.query(`...`);
+db.expectError<E = any>(
+  run: () => Promise<unknown>,
+  expected?: string | RegExp | { code?: string; message?: string | RegExp }
+): Promise<E>  // resolves to the caught error
 ```
+
+| `expected` | Matches when |
+|---|---|
+| omitted | `run` throws anything |
+| `'duplicate key'` | the error message contains the string |
+| `/permission denied/` | the regex matches the error message |
+| `{ code: '42501' }` | the SQLSTATE (`err.code`) is exactly `42501` |
+| `{ code: '23505', message: /email/ }` | both match |
+
+It **throws** (failing the test) when `run` succeeds or the error does not match,
+with the expected matcher and the actual `code: message` in the failure.
+It **resolves** to the caught error, so you can assert on more fields:
+
+```typescript
+const err = await db.expectError(() => db.query(`SELECT app.transfer($1)`, [-5]));
+expect(err.code).toBe('P0001');
+expect(err.message).toMatch(/^INVALID_AMOUNT/);
+```
+
+### What It Does
+
+1. `SAVEPOINT` on this client
+2. runs `run()`
+3. `ROLLBACK TO SAVEPOINT` — **always**, in a `finally`, so the aborted state is
+   cleared even when the assertion fails, and an unexpected success leaves no rows
+4. `RELEASE SAVEPOINT`, so the call nets out to nothing and can be repeated or
+   nested freely
 
 ## Common Scenarios
 
 ### RLS Policy Violations
 
 ```typescript
-it('users cannot modify other users data', async () => {
+it('users cannot hand their item to another user', async () => {
   db.setContext({ role: 'authenticated', 'jwt.claims.user_id': bob });
+  await db.expectError(
+    () => db.query(`UPDATE items SET owner_id = $1 WHERE owner_id = $2`, [alice, bob]),
+    /violates row-level security/ // WITH CHECK rejects the new row
+  );
 
-  await db.savepoint('update_attempt');
-  await expect(
-    db.query(`UPDATE items SET name = 'stolen' WHERE owner_id = $1`, [alice])
-  ).rejects.toThrow(/violates row-level security/);
-  await db.rollback('update_attempt');
-
-  // Verify data unchanged
-  db.setContext({ role: 'authenticated', 'jwt.claims.user_id': alice });
-  const item = await db.query(`SELECT name FROM items WHERE owner_id = $1`, [alice]);
-  expect(item.rows[0].name).toBe('original');
+  const item = await db.one(`SELECT owner_id FROM items WHERE name = 'bobs'`);
+  expect(item.owner_id).toBe(bob);
 });
 ```
 
-### Permission Denied
+> An `UPDATE`/`DELETE` that RLS filters to zero rows does **not** error — it
+> affects 0 rows. Assert `rowCount === 0` for those; use `expectError` only when
+> the policy raises (`WITH CHECK` on `INSERT`/`UPDATE`, or a permission error).
+
+### Permission Denied — Several In A Row
 
 ```typescript
 it('anonymous users cannot modify data', async () => {
   db.setContext({ role: 'anonymous' });
 
-  await db.savepoint('anon_insert');
-  await expect(
-    db.query(`INSERT INTO users (name) VALUES ('hacker')`)
-  ).rejects.toThrow(/permission denied/);
-  await db.rollback('anon_insert');
-
-  await db.savepoint('anon_update');
-  await expect(
-    db.query(`UPDATE users SET name = 'hacked'`)
-  ).rejects.toThrow(/permission denied/);
-  await db.rollback('anon_update');
-
-  await db.savepoint('anon_delete');
-  await expect(
-    db.query(`DELETE FROM users`)
-  ).rejects.toThrow(/permission denied/);
-  await db.rollback('anon_delete');
+  await db.expectError(() => db.query(`INSERT INTO users (name) VALUES ('hacker')`), /permission denied/);
+  await db.expectError(() => db.query(`UPDATE users SET name = 'hacked'`), /permission denied/);
+  await db.expectError(() => db.query(`DELETE FROM users`), /permission denied/);
 });
 ```
 
-### Constraint Violations
+### Constraint Violations (match by SQLSTATE)
 
 ```typescript
 it('rejects duplicate emails', async () => {
   await db.query(`INSERT INTO users (email) VALUES ('test@example.com')`);
 
-  await db.savepoint('duplicate_email');
-  await expect(
-    db.query(`INSERT INTO users (email) VALUES ('test@example.com')`)
-  ).rejects.toThrow(/duplicate key value violates unique constraint/);
-  await db.rollback('duplicate_email');
+  await db.expectError(
+    () => db.query(`INSERT INTO users (email) VALUES ('test@example.com')`),
+    { code: '23505' } // unique_violation
+  );
 
-  // Verify only one user exists
-  const count = await db.query(`SELECT COUNT(*) FROM users`);
-  expect(parseInt(count.rows[0].count)).toBe(1);
+  const count = await db.one(`SELECT count(*) FROM users`);
+  expect(Number(count.count)).toBe(1);
 });
 ```
 
-### PLPGSQL Function Validation
+### PL/pgSQL Raised Errors
 
 ```typescript
-describe('plpgsql_expr', () => {
-  it('rejects NULL query', async () => {
-    await db.savepoint('null_query');
-    await expect(
-      db.any(`SELECT my_function(NULL)`)
-    ).rejects.toThrow('query cannot be NULL');
-    await db.rollback('null_query');
-  });
-
-  it('rejects invalid input', async () => {
-    await db.savepoint('invalid_input');
-    await expect(
-      db.any(`SELECT my_function('{"invalid": true}'::jsonb)`)
-    ).rejects.toThrow('invalid input format');
-    await db.rollback('invalid_input');
-  });
+it('rejects NULL query', async () => {
+  await db.expectError(() => db.any(`SELECT my_function(NULL)`), 'query cannot be NULL');
 });
 ```
 
-### Multiple Failure Tests in Sequence
+### A Shared Call With Fixed Arguments
+
+Wrap the *call*, not the savepoint logic:
 
 ```typescript
-it('validates all input constraints', async () => {
-  // Test 1: null name
-  await db.savepoint('null_name');
-  await expect(
-    db.query(`INSERT INTO products (name, price) VALUES (NULL, 10)`)
-  ).rejects.toThrow(/null value in column "name"/);
-  await db.rollback('null_name');
+const record = (client: PgTestClient, rows: unknown[]) =>
+  client.query(`SELECT app.record($1::jsonb)`, [JSON.stringify(rows)]);
 
-  // Test 2: negative price
-  await db.savepoint('negative_price');
-  await expect(
-    db.query(`INSERT INTO products (name, price) VALUES ('item', -5)`)
-  ).rejects.toThrow(/violates check constraint/);
-  await db.rollback('negative_price');
-
-  // Test 3: valid insert works
-  await db.query(`INSERT INTO products (name, price) VALUES ('item', 10)`);
-  const result = await db.query(`SELECT * FROM products`);
-  expect(result.rows).toHaveLength(1);
-});
+await db.expectError(() => record(db, [bad]), /FORBIDDEN/);
+await pg.expectError(() => record(pg, [{ count: 0 }]), /count_chk/);
 ```
 
-## Key Rules
+## Rules
 
-1. **Always use unique savepoint names** - Avoid conflicts between tests
-2. **Roll back immediately after the expected failure** - Before any other queries
-3. **Use descriptive savepoint names** - Makes debugging easier
-4. **Each failure needs its own savepoint** - Can't reuse savepoints after rollback
+1. **Call `expectError` on the client that runs the statement.** `db.expectError(() => db.query(...))`,
+   `pg.expectError(() => pg.query(...))`. A savepoint on `db` cannot rescue an
+   aborted transaction on `pg` — they are separate connections.
+2. **Never hand-roll it.** No local `expectRejects`/`expectRefused`/`expectRaise`
+   helpers, no `pg.query('SAVEPOINT ...')` / `ROLLBACK TO SAVEPOINT` strings, no
+   `db.savepoint()` → `expect().rejects` → `db.rollback()` triples.
+3. **Match something specific.** Prefer a SQLSTATE `{ code }` or the error code
+   your function raises over a bare `expectError(fn)`, so the test cannot pass on
+   an unrelated failure (a typo, a missing grant).
+4. **Verify state afterwards.** The point of keeping the transaction alive is to
+   prove the rejected operation had no effect.
 
-## Why This Matters
+## When You Still Need `savepoint()` / `rollback()`
 
-Without savepoints, you cannot verify database state after a failed operation. That verification is often the most important part of a security test - confirming that the malicious operation had no effect.
+Only for multi-statement scenarios that are *not* "this should fail" — e.g.
+trying an operation and then undoing it on purpose. `db.savepoint(name)` and
+`db.rollback(name)` remain available; a name can be reused, and
+`ROLLBACK TO SAVEPOINT` keeps the savepoint, so you can roll back to it again.
 
 ## References
 
+- Related: [pgsql-test-rls.md](./pgsql-test-rls.md) for RLS testing
 - Related skill: `pgpm` (`references/testing.md`) for general test setup
-- Related skill: `pgpm` (`references/env.md`) for environment configuration

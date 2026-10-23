@@ -148,18 +148,14 @@ it('user cannot insert for another user', async () => {
     'request.jwt.claim.sub': user1Id
   });
 
-  // Use savepoint pattern for expected failures
-  const point = 'insert_other_user';
-  await db.savepoint(point);
-
-  await expect(
-    db.query(`
+  // expectError keeps the transaction usable after the expected failure
+  await db.expectError(
+    () => db.query(`
       INSERT INTO app.posts (title, owner_id)
       VALUES ('Hacked Post', $1)
-    `, [user2Id])
-  ).rejects.toThrow(/permission denied|violates row-level security/);
-
-  await db.rollback(point);
+    `, [user2Id]),
+    /permission denied|violates row-level security/
+  );
 });
 ```
 
@@ -250,12 +246,10 @@ it('anonymous users have read-only access', async () => {
   expect(result.rows).toHaveLength(1);
 
   // Cannot modify
-  const point = 'anon_insert';
-  await db.savepoint(point);
-  await expect(
-    db.query(`INSERT INTO app.public_posts (title) VALUES ('Hacked')`)
-  ).rejects.toThrow(/permission denied/);
-  await db.rollback(point);
+  await db.expectError(
+    () => db.query(`INSERT INTO app.public_posts (title) VALUES ('Hacked')`),
+    /permission denied/
+  );
 });
 ```
 
@@ -304,20 +298,16 @@ describe('multi-user isolation', () => {
 
 ## Handling Expected Failures
 
-When testing operations that should fail, use the savepoint pattern to avoid "current transaction is aborted" errors:
+When testing operations that should fail, use `db.expectError()` to avoid "current transaction is aborted" errors (see [pgsql-test-exceptions.md](./pgsql-test-exceptions.md)):
 
 ```typescript
 it('rejects unauthorized access', async () => {
   db.setContext({ role: 'anonymous' });
 
-  const point = 'unauthorized_access';
-  await db.savepoint(point);
-
-  await expect(
-    db.query('INSERT INTO app.private_data (secret) VALUES ($1)', ['hack'])
-  ).rejects.toThrow(/permission denied/);
-
-  await db.rollback(point);
+  await db.expectError(
+    () => db.query('INSERT INTO app.private_data (secret) VALUES ($1)', ['hack']),
+    /permission denied/
+  );
 
   // Can continue using db connection
   const result = await db.query('SELECT 1 as ok');

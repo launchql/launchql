@@ -29,6 +29,10 @@ beforeEach(() => db.beforeEach());
 afterEach(() => db.afterEach());
 ```
 
+## Expected Failures
+
+Assert a statement that should fail with `db.expectError(() => db.query(...), /pattern/ | 'substring' | { code })`. It wraps the call in a savepoint and always rolls back to it, so the test transaction stays usable. Never hand-roll `SAVEPOINT` / `ROLLBACK TO SAVEPOINT` or a local `expectRejects` helper.
+
 ## Transaction-Local Context
 
 `setContext()` uses `set_config('key', 'value', true)` — the `true` makes settings **transaction-local**. This means:
@@ -52,6 +56,6 @@ await db.commit();
 ## Where To Look
 
 - `postgres/pgsql-test/src/connect.ts` – connection/bootstrap logic
-- `postgres/pgsql-test/src/test-client.ts` – `PgTestClient` helpers (`beforeEach`, `afterEach`, `setContext`, etc.)
+- `postgres/pgsql-test/src/test-client.ts` – `PgTestClient` helpers (`beforeEach`, `afterEach`, `expectError`, `setContext`, etc.)
 - `postgres/pgsql-test/src/seed/*` – seed adapters
 - `postgres/pgsql-test/__tests__/*` – usage examples

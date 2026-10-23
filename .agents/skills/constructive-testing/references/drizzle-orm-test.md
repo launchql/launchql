@@ -284,19 +284,16 @@ it('user cannot insert for another user', async () => {
     'request.jwt.claim.sub': alice
   });
 
-  const point = 'insert_other';
-  await db.savepoint(point);
-
-  await expect(
-    drizzleDb
+  // drizzleDb runs on db's connection, so db.expectError covers it
+  await db.expectError(
+    () => drizzleDb
       .insert(posts)
       .values({
         title: 'Hacked Post',
         ownerId: bob
-      })
-  ).rejects.toThrow(/permission denied|violates row-level security/);
-
-  await db.rollback(point);
+      }),
+    /permission denied|violates row-level security/
+  );
 });
 ```
 
@@ -369,22 +366,16 @@ it('user can delete own post', async () => {
 
 ## Handling Expected Failures
 
-Use savepoint pattern with Drizzle:
+Use `db.expectError()` with Drizzle:
 
 ```typescript
 it('anonymous cannot insert', async () => {
   db.setContext({ role: 'anonymous' });
 
-  const point = 'anon_insert';
-  await db.savepoint(point);
-
-  await expect(
-    drizzleDb
-      .insert(posts)
-      .values({ title: 'Hacked' })
-  ).rejects.toThrow(/permission denied/);
-
-  await db.rollback(point);
+  await db.expectError(
+    () => drizzleDb.insert(posts).values({ title: 'Hacked' }),
+    /permission denied/
+  );
 });
 ```
 

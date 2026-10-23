@@ -197,20 +197,16 @@ it('user cannot see other users data', async () => {
 
 ### Testing Permission Denied
 
-Use savepoint pattern for expected failures:
+Use `db.expectError()` for expected failures:
 
 ```typescript
 it('anonymous cannot insert', async () => {
   db.setContext({ role: 'anon' });
 
-  const point = 'anon_insert';
-  await db.savepoint(point);
-
-  await expect(
-    db.query(`INSERT INTO app.posts (title) VALUES ('Hacked')`)
-  ).rejects.toThrow(/permission denied/);
-
-  await db.rollback(point);
+  await db.expectError(
+    () => db.query(`INSERT INTO app.posts (title) VALUES ('Hacked')`),
+    /permission denied/
+  );
 });
 ```
 

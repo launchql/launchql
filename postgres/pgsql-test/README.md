@@ -131,6 +131,7 @@ The `PgTestClient` returned by `getConnections()` wraps a `pg.Client` and provid
 * `beforeEach()` – Begins a transaction and sets a savepoint (called at the start of each test)
 * `afterEach()` – Rolls back to the savepoint and commits the outer transaction (cleans up test state)
 * `setContext({ key: value })` – Sets PostgreSQL config variables (like `role`) to simulate RLS contexts
+* `expectError(run, expected?)` – Asserts `run` fails (message substring/RegExp, or `{ code, message }`) inside a savepoint, so the transaction stays usable afterwards; resolves to the caught error (see [Expected failures](#expected-failures))
 * `checkConstraints()` – Runs the commit-time checks for any pending deferred constraints now, without committing (see [Deferred constraints](#deferred-constraints-under-rollback-isolation))
 * `any`, `one`, `oneOrNone`, `many`, `manyOrNone`, `none`, `result` – Typed query helpers for specific result expectations
 
@@ -603,6 +604,26 @@ This table documents the available options for the `getConnections` function. Th
 | `db.rootDb`              | `string`   | `'postgres'`     | Root database used for administrative operations (e.g., creating databases) |
 | `db.prefix`              | `string`   | `'db-'`          | Prefix used when generating test database names                             |
 | `db.deferredConstraints` | `'off' \| 'check' \| 'immediate'` | `'off'` | How `DEFERRABLE INITIALLY DEFERRED` constraints are handled under rollback isolation (env: `DB_DEFERRED_CONSTRAINTS`). See below. |
+
+### Expected failures
+
+A failed statement aborts the surrounding transaction, so after a plain `expect(...).rejects` every later query in the test fails with `current transaction is aborted`. Use `expectError()` instead — it wraps the call in a savepoint, always rolls back to it, and throws if the call succeeds or fails differently:
+
+```ts
+it('anonymous users cannot write', async () => {
+  db.setContext({ role: 'anonymous' });
+  await db.expectError(() => db.query(`INSERT INTO app.posts (title) VALUES ('x')`), /permission denied/);
+  await db.expectError(() => db.query(`DELETE FROM app.posts`), { code: '42501' });
+
+  const err = await db.expectError(() => db.query(`SELECT app.transfer(-5)`));
+  expect(err.message).toMatch(/^INVALID_AMOUNT/);
+
+  // still usable
+  expect((await db.one(`SELECT count(*) FROM app.posts`)).count).toBe('1');
+});
+```
+
+`expected` is a message substring, a `RegExp`, or `{ code?: string; message?: string | RegExp }` (`code` is the SQLSTATE). Run the statement on the same client you call `expectError` on.
 
 ### Deferred constraints under rollback isolation
 

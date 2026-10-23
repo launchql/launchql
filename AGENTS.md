@@ -158,6 +158,7 @@ afterEach(async () => {
 - **Never** use `getPgPool()` from `pg-cache` in tests — that's for production connection pooling
 - **Never** manually create/drop databases in tests — `pgsql-test` handles this automatically
 - **Never** skip `beforeEach`/`afterEach` hooks — tests will leak state to each other
+- **Never** hand-roll `SAVEPOINT` / `ROLLBACK TO SAVEPOINT` (or a local `expectRejects` helper) around a statement that should fail — use `await db.expectError(() => db.query(...), /pattern/)`, which keeps the test transaction usable afterwards
 - **Never** construct connection strings manually — use the env configuration system
 
 ## Tooling Skills

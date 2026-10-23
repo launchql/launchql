@@ -134,45 +134,20 @@ current transaction is aborted, commands ignored until end of transaction block
 
 **Cause:** An error occurred in the transaction, and PostgreSQL marks the entire transaction as aborted. All subsequent queries fail until the transaction ends.
 
-**Solution:** Use savepoints when testing operations that should fail:
+**Solution:** Assert the failing statement with `db.expectError()` — it runs it inside a savepoint and rolls back to it, so the transaction stays usable:
 
-```typescript
-// Before the expected failure
-const point = 'my_savepoint';
-await db.savepoint(point);
-
-// Operation that should fail
-await expect(
-  db.query('INSERT INTO restricted_table ...')
-).rejects.toThrow(/permission denied/);
-
-// After the failure - rollback to savepoint
-await db.rollback(point);
-
-// Now you can continue using the connection
-const result = await db.query('SELECT 1');
-```
-
-**Pattern for multiple failures:**
 ```typescript
 it('tests multiple failure scenarios', async () => {
-  // First failure
-  const point1 = 'first_failure';
-  await db.savepoint(point1);
-  await expect(db.query('...')).rejects.toThrow();
-  await db.rollback(point1);
+  await db.expectError(() => db.query('INSERT INTO restricted_table ...'), /permission denied/);
+  await db.expectError(() => db.query('INSERT INTO users (email) VALUES ($1)', [dup]), { code: '23505' });
 
-  // Second failure
-  const point2 = 'second_failure';
-  await db.savepoint(point2);
-  await expect(db.query('...')).rejects.toThrow();
-  await db.rollback(point2);
-
-  // Continue with passing assertions
+  // The connection is still usable
   const result = await db.query('SELECT 1');
   expect(result.rows[0]).toBeDefined();
 });
 ```
+
+Call it on the client that runs the statement (`pg.expectError(() => pg.query(...))` for `pg`). Don't hand-roll `SAVEPOINT` / `ROLLBACK TO SAVEPOINT` or write a local wrapper. See the `constructive-testing` skill's `references/pgsql-test-exceptions.md`.
 
 ### Tests Interfering with Each Other
 
@@ -312,7 +287,7 @@ pgpm docker start
 |-------|-----------|
 | Can't connect | `pgpm docker start && eval "$(pgpm env)"` |
 | PGHOST not set | `eval "$(pgpm env)"` |
-| Transaction aborted | Use savepoint pattern |
+| Transaction aborted | `db.expectError(() => db.query(...), /pattern/)` |
 | Tests interfere | Check beforeEach/afterEach hooks |
 | Module not found | Verify workspace structure |
 | Port in use | `pg_isready -h localhost -p 5432` — if it's Postgres, use it (export PG*); else `pgpm docker start --port 5433` + `PGPORT=5433` |

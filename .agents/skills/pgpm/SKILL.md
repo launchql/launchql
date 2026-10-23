@@ -338,7 +338,7 @@ In `noTty` mode, `inquirerer` uses defaults where available and throws with the 
 | Can't connect to database | `pg_isready -h $PGHOST -p $PGPORT`; if nothing is listening, `pgpm docker start && eval "$(pgpm env)"` |
 | `PGHOST` not set | `eval "$(pgpm env)"` — must use `eval`, not run in subshell |
 | Developer already runs Postgres on 5432 | Use it: `export PGHOST=localhost PGPORT=5432 PGUSER=<superuser> PGPASSWORD=...` then `pgpm admin-users bootstrap --yes`. No Docker needed |
-| Transaction aborted in tests | Use `db.beforeEach()` / `db.afterEach()` savepoint pattern |
+| `current transaction is aborted` after an expected failure | Wrap the failing call: `await db.expectError(() => db.query(...), /pattern/)` — never hand-roll `SAVEPOINT`/`ROLLBACK TO` |
 | Tests interfere with each other | Ensure every test file has `beforeEach`/`afterEach` hooks |
 | Module not found during deploy | Verify `.control` file exists and workspace structure is correct |
 | Dependency not found | Check `.control` `requires` uses control names, not npm names |
