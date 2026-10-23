@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/examples-pgpm-projections",
-  "version": "0.10.6",
+  "version": "0.10.7",
   "private": true,
   "description": "Example: pgpm projections — one schema, projected into every granularity, naming, partition, and output shape, all proven to deploy to the identical Postgres catalog.",
   "homepage": "https://github.com/constructive-io/constructive",

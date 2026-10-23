@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.19.0](https://github.com/constructive-io/constructive/compare/pgsql-test@5.18.1...pgsql-test@5.19.0) (2026-10-23)
+
+### Bug Fixes
+
+- **pgsql-test:** expectError reports cleanup failures alongside the original error; reset lastIndex on /g matchers ([ce279e2](https://github.com/constructive-io/constructive/commit/ce279e2c66552697c5590fd43a1a6eb3a97eb3a7))
+
+### Features
+
+- **pgsql-test:** PgTestClient.expectError for expected failures; skills use it instead of hand-rolled savepoints ([ddd29b5](https://github.com/constructive-io/constructive/commit/ddd29b54c29d7945c914b4175b0a69e7a76eb2ed))
+
 ## [5.18.1](https://github.com/constructive-io/constructive/compare/pgsql-test@5.18.0...pgsql-test@5.18.1) (2026-10-16)
 
 ### Bug Fixes

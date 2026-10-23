@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/query-builder",
-  "version": "3.17.1",
+  "version": "3.17.2",
   "author": "Constructive <developers@constructive.io>",
   "description": "PostgreSQL Query Builder",
   "main": "index.js",

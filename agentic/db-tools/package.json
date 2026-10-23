@@ -1,6 +1,6 @@
 {
   "name": "@agentic-kit/db-tools",
-  "version": "0.10.7",
+  "version": "0.10.8",
   "author": "Constructive <developers@constructive.io>",
   "description": "harness-neutral Constructive database tools — provisioning, schema, policies, records, templates and codegen as HarnessTools any adapter can bind",
   "main": "index.js",

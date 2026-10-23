@@ -1,6 +1,6 @@
 {
   "name": "@constructive-io/perf-harness",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "private": true,
   "description": "Reusable fresh-process Graphile performance harness",
   "main": "index.js",
