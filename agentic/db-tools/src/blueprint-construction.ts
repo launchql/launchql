@@ -161,18 +161,38 @@ export async function waitForConstruction(
 }
 
 /**
+ * A build that failed after the backend queued it, or that the wait gave up
+ * on. The construction carries on without the caller, so constructing again
+ * would queue the same tables a second time.
+ */
+export class BlueprintBuildError extends Error {
+  readonly constructionId: string;
+
+  constructor(message: string, constructionId: string) {
+    super(message);
+    this.name = 'BlueprintBuildError';
+    this.constructionId = constructionId;
+  }
+}
+
+/**
  * Construct a blueprint into a schema and wait for the build. Resolves with
- * the created tables; throws with the backend's reason when it fails.
+ * the construction and the created tables. Once the backend has queued the
+ * build, every failure is a BlueprintBuildError with its construction id.
  */
 export async function buildBlueprint(
   modules: ModulesClient,
   input: { blueprintId: string; schemaId: string },
   options: WaitForConstructionOptions = {},
-): Promise<ConstructionTableMap> {
+): Promise<{ constructionId: string; tables: ConstructionTableMap }> {
   const result = await modules.mutation
     .constructBlueprint({ input }, { select: { result: true } })
     .unwrap();
   const constructionId = result.constructBlueprint?.result;
   if (!constructionId) throw new Error('constructBlueprint returned no construction id');
-  return waitForConstruction(modules, constructionId, options);
+  try {
+    return { constructionId, tables: await waitForConstruction(modules, constructionId, options) };
+  } catch (err) {
+    throw new BlueprintBuildError(errorText(err), constructionId);
+  }
 }

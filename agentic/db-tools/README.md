@@ -89,9 +89,11 @@ Host hooks for this, all optional:
 
 ## Blueprint builds
 
-`constructBlueprint` queues the build and returns the construction id, and the backend builds one blueprint at a time. So `provision_blueprint`, `add_relation` and `apply_template` wait for their build through `buildBlueprint` (or `waitForConstruction`, given an id), which reads the construction every 2 s until it is `constructed`, and returns its table map, or `failed`, and throws with the backend's error code and message. The error is read in a separate query after the failure, so the status reads also work on a backend without the `error` column, and there the failure says the backend gave no reason. A host that polls on its own reads the reason the same way with `readConstructionFailure`. On a backend that still builds inside the mutation, the first read already says `constructed`.
+`constructBlueprint` queues the build and returns the construction id, and the backend builds one blueprint at a time. So `provision_blueprint`, `add_relation` and `apply_template` wait for their build through `buildBlueprint` (or `waitForConstruction`, given an id), which reads the construction every 2 s until it is `constructed`, and returns the construction id and its table map, or `failed`, and throws with the backend's error code and message. The error is read in a separate query after the failure, so the status reads also work on a backend without the `error` column, and there the failure says the backend gave no reason. A host that polls on its own reads the reason the same way with `readConstructionFailure`. On a backend that still builds inside the mutation, the first read already says `constructed`.
 
 The wait gives up after `CONSTRUCTION_DEADLINE_MS` (240 s: the build's own 120 s statement timeout, plus as long again in the queue), when the signal aborts, or when the status can't be read (a GraphQL error, or 3 network failures in a row), and says the build may still finish. A host that limits how long a tool runs should give these three tools more than 240 s.
+
+Once the backend has queued the build, `buildBlueprint` throws every failure as a `BlueprintBuildError` with its `constructionId`, and `provision_blueprint` puts that id on `details.constructionId`, whether the build succeeded or not. The build carries on without the call, so a host that retries failed calls shouldn't retry one that has an id: a second build of the same tables fails on the ones the first made. Without an id, nothing was queued.
 
 ## Related
 

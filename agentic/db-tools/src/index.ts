@@ -54,6 +54,7 @@ export function createConstructiveDbTools(host: ToolsHost): readonly AnyHarnessT
 }
 
 export {
+  BlueprintBuildError,
   buildBlueprint,
   CONSTRUCTION_DEADLINE_MS,
   type ConstructionTableMap,

@@ -342,13 +342,13 @@ export const applyTemplateTool: HarnessTool<typeof ApplyTemplateZod, TemplateDet
       const blueprintId = copyResult.copyTemplateToBlueprint?.result;
       if (!blueprintId) throw new Error('Failed to copy template');
 
-      const tableMap = await buildBlueprint(
+      const { tables } = await buildBlueprint(
         modules,
         { blueprintId, schemaId },
         { signal: ctx.signal },
       );
 
-      const createdCount = Object.keys(tableMap).length;
+      const createdCount = Object.keys(tables).length;
       return done(
         true,
         `Applied template "${params.templateName}" — created ${createdCount} table${createdCount === 1 ? '' : 's'}`,
