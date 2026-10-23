@@ -6,6 +6,7 @@ import {
   type HarnessTool,
 } from '@agentic-kit/harness';
 
+import { BlueprintBuildError, buildBlueprint } from '../blueprint-construction';
 import { resolveProjectContext } from '../context';
 
 type Params = Blueprint;
@@ -29,6 +30,12 @@ export type ProvisionBlueprintDetails = {
   total: number;
   tables: ProvisionedTable[];
   error: string | null;
+  /**
+   * The construction the backend queued, also when the build then failed or
+   * the wait gave up: the build carries on, so calling again would build the
+   * same tables twice. Null when nothing was queued.
+   */
+  constructionId: string | null;
 };
 
 function formatText(name: string, details: ProvisionBlueprintDetails): string {
@@ -57,7 +64,13 @@ export const provisionBlueprintTool: HarnessTool<typeof BlueprintZod, ProvisionB
       'provision_blueprint: create new tables from scratch in a single call (fields + policies + relations). Call describe_schema first.',
     parameters: BlueprintZod,
     async execute(params: Params, ctx) {
-      const empty: ProvisionBlueprintDetails = { created: 0, total: 0, tables: [], error: null };
+      const empty: ProvisionBlueprintDetails = {
+        created: 0,
+        total: 0,
+        tables: [],
+        error: null,
+        constructionId: null,
+      };
 
       const resolved = await resolveProjectContext(ctx.cwd);
       if (!resolved.context) {
@@ -93,12 +106,11 @@ export const provisionBlueprintTool: HarnessTool<typeof BlueprintZod, ProvisionB
         const blueprintId = createResult.createBlueprint?.blueprint?.id;
         if (!blueprintId) throw new Error('Failed to create blueprint');
 
-        await modules.mutation
-          .constructBlueprint(
-            { input: { blueprintId, schemaId } },
-            { select: { result: true } },
-          )
-          .unwrap();
+        const { constructionId } = await buildBlueprint(
+          modules,
+          { blueprintId, schemaId },
+          { signal: ctx.signal },
+        );
 
         const relations = params.definition.relations ?? [];
         const details: ProvisionBlueprintDetails = {
@@ -116,6 +128,7 @@ export const provisionBlueprintTool: HarnessTool<typeof BlueprintZod, ProvisionB
             relationCount: relations.filter((r) => r.source_table === t.table_name).length,
           })),
           error: null,
+          constructionId,
         };
         return { content: [{ type: 'text', text: formatText(params.name, details) }], details };
       } catch (err) {
@@ -125,6 +138,7 @@ export const provisionBlueprintTool: HarnessTool<typeof BlueprintZod, ProvisionB
           total: params.definition.tables.length,
           tables: [],
           error: message,
+          constructionId: err instanceof BlueprintBuildError ? err.constructionId : null,
         };
         return { content: [{ type: 'text', text: formatText(params.name, details) }], details };
       }

@@ -901,7 +901,11 @@ describe('MetaSchemaPlugin', () => {
         isPrimaryKey: false,
         isForeignKey: false,
         description: null,
-        enumValues: null
+        enumValues: null,
+        allowedValues: null,
+        isRequiredOnCreate: null,
+        isWritableOnCreate: null,
+        isWritableOnUpdate: null
       });
     });
 

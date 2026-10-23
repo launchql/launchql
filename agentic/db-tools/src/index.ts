@@ -54,6 +54,15 @@ export function createConstructiveDbTools(host: ToolsHost): readonly AnyHarnessT
 }
 
 export {
+  BlueprintBuildError,
+  buildBlueprint,
+  CONSTRUCTION_DEADLINE_MS,
+  type ConstructionTableMap,
+  readConstructionFailure,
+  waitForConstruction,
+  type WaitForConstructionOptions,
+} from './blueprint-construction';
+export {
   CONTEXT_ENV_KEYS,
   CONTEXT_ENV_PREFIX,
   type ContextEnvKey,
@@ -66,8 +75,22 @@ export {
   type ProjectContextFailureCode,
   resolveDataToken,
   resolveProjectContext,
+  type ResolveResult,
 } from './context';
+export {
+  type DatabaseProbe,
+  probeBoundDatabase,
+  probeDatabase,
+  type UnreachableCause,
+} from './db-probe';
 export { constructiveGateDeps, type ConstructiveGateResolvers } from './gate';
+export {
+  type BackendErrorKind,
+  classifyBackendErrors,
+  type HttpGraphQLResponse,
+  postGraphQL,
+  statusAdapter,
+} from './graphql-http';
 export {
   type ActiveDataToken,
   configureHost,
@@ -78,10 +101,19 @@ export {
   type HostBackendConfig,
   type HostProvisionOverlay,
   type PreviewToken,
+  type ProjectBinding,
   type SecretDelivery,
   type StepUpRequest,
   type ToolsHost,
 } from './host';
+export {
+  archiveBindingKeys,
+  ARCHIVED_BINDING_KEYS,
+  type EnvVars,
+  mergeEnv,
+  provisionEnvVars,
+  readEnv,
+} from './provision-database/env-file';
 export {
   loadProvisionManifest,
   parseProvisionManifest,
@@ -96,11 +128,34 @@ export {
   type ProvisionModule,
 } from './provision-database/presets';
 export {
+  provisionDatabase,
+  type ProvisionDatabaseDetails,
+  type ProvisionFailureCode,
+  type ProvisionInput,
+} from './provision-database/provision';
+export {
   moduleKey,
   type ProvisionOverlay,
   resolveProvisionModules,
 } from './provision-database/resolve';
+export {
+  accessOf,
+  type ColumnDefault,
+  type FkAction,
+  type ModelColumn,
+  type ModelForeignKey,
+  type ModelPolicy,
+  type ModelTable,
+  type ObjectCategory,
+  readSchemaModel,
+  type SchemaModel,
+  SchemaReadError,
+  type TableAccess,
+} from './schema-model';
 export { toolSchema } from './tool-schema';
+export { type AddRecordsDetails } from './tools/add-records';
+export { type CreateApiKeyDetails } from './tools/create-api-key';
+export { type RunCodegenDetails, type RunCodegenTimings } from './tools/run-codegen';
 export { createTemplatePreviewTables } from './tools/templates';
 
 export default constructiveDbTools;

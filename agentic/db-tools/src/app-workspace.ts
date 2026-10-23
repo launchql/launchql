@@ -1,5 +1,5 @@
 import { execFile } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -25,6 +25,50 @@ const DEFAULT_GRAPHQL_OVERRIDE = '16.14.0';
 
 const TEMPLATE_REPO = 'https://github.com/constructive-io/sandbox-templates';
 const TEMPLATE_SUBDIR = path.join('nextjs', 'constructive-app');
+
+// A composed app carries this marker, written when its template was composed.
+// It ships its own pinned package.json and pnpm-lock.yaml, so none of the
+// constructive-app fixups below apply to it.
+export const COMPOSE_MARKER = path.join('.constructive', 'compose.json');
+
+export type AppKind =
+  | { kind: 'composed' }
+  | { kind: 'template' }
+  | { kind: 'invalid'; reason: string };
+
+/**
+ * Which flow packages/app takes. Composed needs the marker to be a JSON object
+ * and the app's own lockfile beside it. A marker that fails either check is
+ * neither: running the template fixups would rewrite a composed app, so
+ * callers stop and report the reason instead.
+ */
+export function detectAppKind(appDir: string): AppKind {
+  const marker = path.join(appDir, COMPOSE_MARKER);
+  if (!existsSync(marker)) return { kind: 'template' };
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(readFileSync(marker, 'utf8'));
+  } catch {
+    return { kind: 'invalid', reason: `packages/app/${COMPOSE_MARKER} is not valid JSON.` };
+  }
+  if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+    return { kind: 'invalid', reason: `packages/app/${COMPOSE_MARKER} is not a JSON object.` };
+  }
+  if (!existsSync(path.join(appDir, 'pnpm-lock.yaml'))) {
+    return {
+      kind: 'invalid',
+      reason: `packages/app has ${COMPOSE_MARKER} but no pnpm-lock.yaml, so it can't be installed as composed.`,
+    };
+  }
+  return { kind: 'composed' };
+}
+
+export type RunCommand = (
+  cmd: string,
+  args: string[],
+  cwd: string,
+  env?: Record<string, string>,
+) => Promise<{ ok: boolean; out: string }>;
 
 export async function run(
   cmd: string,
@@ -97,7 +141,10 @@ export async function pinCodegenLatest(appDir: string): Promise<void> {
 // its CLI is unreliable in the non-TTY agent shell, which made the agent thrash
 // for minutes. Materialize `packages/app` deterministically by shallow-cloning
 // the template instead (PGPM-001).
-export async function ensureAppScaffold(cwd: string): Promise<{ ok: boolean; out: string }> {
+export async function ensureAppScaffold(
+  cwd: string,
+  exec: RunCommand = run,
+): Promise<{ ok: boolean; out: string }> {
   const appDir = path.join(cwd, 'packages', 'app');
   if (existsSync(path.join(appDir, 'package.json'))) {
     return { ok: true, out: 'packages/app already scaffolded' };
@@ -105,7 +152,7 @@ export async function ensureAppScaffold(cwd: string): Promise<{ ok: boolean; out
 
   const tmp = path.join(os.tmpdir(), `airpage-app-template-${process.pid}`);
   await rm(tmp, { recursive: true, force: true });
-  const clone = await run('git', ['clone', '--depth', '1', TEMPLATE_REPO, tmp], cwd);
+  const clone = await exec('git', ['clone', '--depth', '1', TEMPLATE_REPO, tmp], cwd);
   if (!clone.ok) {
     await rm(tmp, { recursive: true, force: true });
     return { ok: false, out: `Template clone failed:\n${clone.out}` };
@@ -131,22 +178,91 @@ export async function ensureAppScaffold(cwd: string): Promise<{ ok: boolean; out
   return { ok: true, out: 'Scaffolded packages/app from the constructive-app template.' };
 }
 
+// pnpm writes node_modules/.modules.yaml once an install finishes linking, so a
+// partial install (interrupted, or failed mid-way) lacks it. Codegen also
+// needs its bin, so both must be there to skip the install.
+function composedInstallComplete(appDir: string): boolean {
+  const modules = path.join(appDir, 'node_modules');
+  return (
+    existsSync(path.join(modules, '.modules.yaml')) &&
+    existsSync(path.join(modules, '.bin', 'graphql-codegen'))
+  );
+}
+
+// Install a composed app exactly as its lockfile pins it, unless a finished
+// install is already there. The install runs in packages/app against its own
+// lockfile, from the store where it can. A nested pnpm-workspace.yaml makes the
+// app its own workspace root, so the config is left alone; without one, a root
+// pnpm-workspace.yaml would pull the install up to the project root, where no
+// lockfile exists, so pnpm is told to ignore it instead of rewriting it.
+export async function ensureComposedInstall(
+  cwd: string,
+  exec: RunCommand = run,
+): Promise<{ ok: boolean; out: string; installed: boolean }> {
+  const appDir = path.join(cwd, 'packages', 'app');
+  if (composedInstallComplete(appDir)) {
+    return { ok: true, out: 'packages/app dependencies already installed.', installed: false };
+  }
+
+  const args = ['install', '--frozen-lockfile', '--prefer-offline'];
+  const ownsWorkspace = existsSync(path.join(appDir, 'pnpm-workspace.yaml'));
+  if (!ownsWorkspace && existsSync(path.join(cwd, 'pnpm-workspace.yaml'))) {
+    args.push('--ignore-workspace');
+  }
+  const install = await exec('pnpm', args, appDir);
+  if (!install.ok && !IGNORED_BUILDS_RE.test(install.out)) {
+    return { ok: false, out: `pnpm install failed:\n${install.out}`, installed: true };
+  }
+  return { ok: true, out: 'Installed packages/app from its lockfile.', installed: true };
+}
+
 // Scaffold packages/app, hoist the workspace config, pin codegen, and run the one
 // clean install. All of this is database-INDEPENDENT, so it can be prewarmed
 // concurrently with the ~90s provision_database backend mutation to keep clone +
 // install off run_codegen's critical path. Best-effort and fully idempotent:
 // run_codegen re-runs the same steps, finding the scaffold present and the install
 // already satisfied (a fast no-op). Errors are swallowed by callers that prewarm —
-// run_codegen surfaces any real failure later.
-export async function prewarmAppWorkspace(cwd: string): Promise<{ ok: boolean; out: string }> {
-  const scaffold = await ensureAppScaffold(cwd);
+// run_codegen surfaces any real failure later. A composed app only gets its
+// frozen install, and an invalid marker leaves the app untouched.
+//
+// One prewarm runs per project at a time: a call while one is in flight gets
+// that same run, so a retried provision_database (or run_codegen, via
+// settlePrewarm) never starts a second install beside it.
+const prewarmsInFlight = new Map<string, Promise<{ ok: boolean; out: string }>>();
+
+export function prewarmAppWorkspace(
+  cwd: string,
+  exec: RunCommand = run,
+): Promise<{ ok: boolean; out: string }> {
+  const key = path.resolve(cwd);
+  const inFlight = prewarmsInFlight.get(key);
+  if (inFlight) return inFlight;
+  const started = prewarm(cwd, exec).finally(() => prewarmsInFlight.delete(key));
+  prewarmsInFlight.set(key, started);
+  return started;
+}
+
+/** Wait for a prewarm still running for `cwd`; its outcome doesn't matter here. */
+export async function settlePrewarm(cwd: string): Promise<void> {
+  await prewarmsInFlight.get(path.resolve(cwd))?.catch((): void => undefined);
+}
+
+async function prewarm(cwd: string, exec: RunCommand): Promise<{ ok: boolean; out: string }> {
+  const appDir = path.join(cwd, 'packages', 'app');
+  const app = detectAppKind(appDir);
+  if (app.kind === 'invalid') return { ok: false, out: app.reason };
+  if (app.kind === 'composed') {
+    const install = await ensureComposedInstall(cwd, exec);
+    return install.ok ? { ok: true, out: 'Prewarmed packages/app install.' } : install;
+  }
+
+  const scaffold = await ensureAppScaffold(cwd, exec);
   if (!scaffold.ok) return scaffold;
 
-  const appDir = path.join(cwd, 'packages', 'app');
   await ensureWorkspaceConfig(cwd);
   await pinCodegenLatest(appDir);
 
-  const install = await run('pnpm', ['install', '--no-frozen-lockfile'], cwd);
+  const install = await exec('pnpm', ['install', '--no-frozen-lockfile'], cwd);
   if (!install.ok && !IGNORED_BUILDS_RE.test(install.out)) {
     return { ok: false, out: `pnpm install failed:\n${install.out}` };
   }

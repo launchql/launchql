@@ -1,4 +1,10 @@
-import { getNamedType, type GraphQLSchema } from 'graphql';
+import {
+  getNamedType,
+  type GraphQLInputObjectType,
+  type GraphQLSchema,
+  isInputObjectType,
+  isNonNullType
+} from 'graphql';
 
 import {
   buildForeignKeyConstraints,
@@ -6,7 +12,10 @@ import {
   buildPrimaryKey,
   buildUniqueConstraints
 } from './constraint-meta-builders';
+import { exposedColumns } from './exposure';
 import { getFieldContainerType } from './graphql-schema-utils';
+import { safeInflection } from './inflection-utils';
+import { indexJunctions } from './junction-meta-builders';
 import { buildInflectionMeta, buildQueryMeta, resolveTableType } from './name-meta-builders';
 import {
   buildBelongsToRelations,
@@ -27,14 +36,58 @@ import {
   getUniques,
   isTableResource
 } from './table-resource-utils';
-import { buildFieldMeta } from './type-mappings';
+import { buildFieldMeta, readAllowedValues } from './type-mappings';
 import type {
   ConstraintsMeta,
   MetaBuild,
   PgCodec,
+  QueryMeta,
   RelationsMeta,
   TableMeta
 } from './types';
+
+// The record a create or update mutation writes. `exists` is false when the
+// mutation isn't in the schema; `fields` is null when it is but its record
+// input can't be found under the inflected name, so writability is unknown.
+type RecordInput =
+  | { exists: false }
+  | { exists: true; fields: ReturnType<GraphQLInputObjectType['getFields']> | null };
+
+// The record field of the mutation's `input` argument, by the name PostGraphile
+// gives it (`CreateShiftInput.shift`, `UpdateShiftInput.shiftPatch`); other
+// input objects in the same input (nested writes) are never mistaken for it.
+function mutationRecordInput(
+  schema: GraphQLSchema,
+  mutationName: string | null,
+  recordFieldName: string | null
+): RecordInput {
+  const mutation = mutationName ? schema.getMutationType()?.getFields()[mutationName] : undefined;
+  if (!mutation) return { exists: false };
+  const inputArg = mutation.args.find((arg) => arg.name === 'input');
+  const inputType = inputArg ? getNamedType(inputArg.type) : null;
+  const recordField =
+    isInputObjectType(inputType) && recordFieldName
+      ? inputType.getFields()[recordFieldName]
+      : undefined;
+  const record = recordField ? getNamedType(recordField.type) : null;
+  return { exists: true, fields: isInputObjectType(record) ? record.getFields() : null };
+}
+
+function resolveWriteInputs(
+  schema: GraphQLSchema,
+  query: QueryMeta,
+  resource: TableResourceWithCodec,
+  build: MetaBuild
+) {
+  const tableFieldName = safeInflection(() => build.inflection.tableFieldName?.(resource), null);
+  const patchFieldName = tableFieldName
+    ? safeInflection(() => build.inflection.patchField?.(tableFieldName), null)
+    : null;
+  return {
+    create: mutationRecordInput(schema, query.create, tableFieldName),
+    patch: mutationRecordInput(schema, query.update, patchFieldName)
+  };
+}
 
 function buildTableMeta(
   resource: TableResourceWithCodec,
@@ -64,17 +117,23 @@ function buildTableMeta(
     for (const attrName of relation.localAttributes || []) fkAttrNames.add(attrName);
   }
 
+  const query = buildQueryMeta(
+    resource,
+    uniques,
+    tableType,
+    context.build,
+    context.schema
+  );
+  // Requiredness comes from the create input PostGraphile actually built, not
+  // from NOT NULL: a trigger-filled column (`@behavior -insert`) or one with a
+  // default is NOT NULL yet optional or absent there.
+  const writeInputs = context.schema
+    ? resolveWriteInputs(context.schema, query, resource, context.build)
+    : null;
+
+  const exposed = exposedColumns(codec, context);
   const fields = Object.entries(attributes).flatMap(([attrName, attr]) => {
-    if (
-      context.schema &&
-      context.build.behavior?.pgCodecAttributeMatches &&
-      !context.build.behavior.pgCodecAttributeMatches(
-        [codec, attrName],
-        'attribute:select'
-      )
-    ) {
-      return [];
-    }
+    if (!exposed.has(attrName)) return [];
 
     const fieldName = context.inflectAttr(attrName, codec);
     const fieldMeta = buildFieldMeta(fieldName, attrName, attr, context.build, {
@@ -82,25 +141,22 @@ function buildTableMeta(
       isForeignKey: fkAttrNames.has(attrName)
     });
 
-    if (finalTableType) {
-      const finalField = finalTableType.getFields()[fieldName];
-      if (!finalField) return [];
+    const finalTypeName = exposed.get(attrName);
+    if (finalTypeName) fieldMeta.type.gqlType = finalTypeName;
+    // Only an exposed field reports its CHECK values, so a constraint on a
+    // hidden column contributes nothing.
+    fieldMeta.allowedValues = readAllowedValues(attr);
 
-      const finalTypeName = getNamedType(finalField.type).name;
-      const codecForLookup = attr.codec?.arrayOfCodec || attr.codec;
-      const registeredTypeName =
-        codecForLookup &&
-        context.build.hasGraphQLTypeForPgCodec?.(codecForLookup, 'output')
-          ? context.build.getGraphQLTypeNameByPgCodec?.(
-            codecForLookup,
-            'output'
-          )
+    if (writeInputs) {
+      const { create, patch } = writeInputs;
+      const createField = create.exists ? create.fields?.[fieldName] : undefined;
+      fieldMeta.isWritableOnCreate = !create.exists ? false : create.fields ? !!createField : null;
+      fieldMeta.isRequiredOnCreate = !create.exists
+        ? false
+        : create.fields
+          ? !!createField && isNonNullType(createField.type)
           : null;
-      if (registeredTypeName && registeredTypeName !== finalTypeName) {
-        return [];
-      }
-
-      fieldMeta.type.gqlType = finalTypeName;
+      fieldMeta.isWritableOnUpdate = !patch.exists ? false : patch.fields ? !!patch.fields[fieldName] : null;
     }
 
     return [fieldMeta];
@@ -139,14 +195,6 @@ function buildTableMeta(
   const realtime = buildRealtimeMeta(codec, context.build);
   const scope = buildScopeMeta(codec, context.inflectAttr);
 
-  const query = buildQueryMeta(
-    resource,
-    uniques,
-    tableType,
-    context.build,
-    context.schema
-  );
-
   return {
     name: tableType,
     tableName: codec.extensions?.pg?.name ?? codec.name,
@@ -164,7 +212,9 @@ function buildTableMeta(
     search,
     i18n,
     realtime,
-    scope
+    scope,
+    // Settled in collectTablesMeta once every table's relations are built.
+    isJunction: false
   };
 }
 
@@ -175,7 +225,7 @@ export function collectTablesMeta(
   const configuredSchemas = getConfiguredSchemas(build);
   const context = createBuildContext(build, schema);
   const seenCodecs = new Set<PgCodec>();
-  const tablesMeta: TableMeta[] = [];
+  const tables: { resource: TableResourceWithCodec; schemaName: string }[] = [];
 
   for (const resource of Object.values(build.input.pgRegistry.pgResources || {})) {
     if (!isTableResource(resource)) continue;
@@ -193,9 +243,26 @@ export function collectTablesMeta(
       continue;
     }
 
-    const tableMeta = buildTableMeta(resource, schemaName, context);
-    if (tableMeta) tablesMeta.push(tableMeta);
+    tables.push({ resource, schemaName });
   }
 
-  return tablesMeta;
+  // Junctions are a property of the whole table set: a detected junction adds
+  // a many-to-many relation to each of the two tables it links.
+  context.junctions = indexJunctions(
+    tables.map((table) => table.resource),
+    context
+  );
+  context.emittedJunctions = new Set();
+
+  const built: { codec: PgCodec; meta: TableMeta }[] = [];
+  for (const { resource, schemaName } of tables) {
+    const tableMeta = buildTableMeta(resource, schemaName, context);
+    if (tableMeta) built.push({ codec: resource.codec, meta: tableMeta });
+  }
+  // A table is a junction exactly when a reported many-to-many relation names
+  // it, so the flag says nothing the relations don't already show.
+  for (const { codec, meta } of built) {
+    meta.isJunction = context.emittedJunctions.has(codec);
+  }
+  return built.map(({ meta }) => meta);
 }

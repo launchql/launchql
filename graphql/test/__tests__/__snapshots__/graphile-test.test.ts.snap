@@ -1478,7 +1478,7 @@ based pagination. May not be used with \`last\`.",
             {
               "args": [],
               "deprecationReason": null,
-              "description": "i18n metadata (null if no @i18n tag)",
+              "description": "i18n metadata (null if the table is not translatable)",
               "isDeprecated": false,
               "name": "i18n",
               "type": {
@@ -1490,7 +1490,7 @@ based pagination. May not be used with \`last\`.",
             {
               "args": [],
               "deprecationReason": null,
-              "description": "Realtime metadata (null if no @realtime tag)",
+              "description": "Realtime metadata (null if the table has no change subscriptions)",
               "isDeprecated": false,
               "name": "realtime",
               "type": {
@@ -1502,13 +1502,29 @@ based pagination. May not be used with \`last\`.",
             {
               "args": [],
               "deprecationReason": null,
-              "description": "Provisioning scope metadata (null if no @scope tag)",
+              "description": "Provisioning scope metadata (null if the table has no scope)",
               "isDeprecated": false,
               "name": "scope",
               "type": {
                 "kind": "OBJECT",
                 "name": "MetaScope",
                 "ofType": null,
+              },
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "Whether this table only links rows of two other tables; the link appears in their manyToMany relations",
+              "isDeprecated": false,
+              "name": "isJunction",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null,
+                },
               },
             },
           ],
@@ -1658,6 +1674,62 @@ based pagination. May not be used with \`last\`.",
                 "ofType": null,
               },
             },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "Values this field accepts, when the set is fixed; null otherwise. Set on a table's own fields only.",
+              "isDeprecated": false,
+              "name": "allowedValues",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null,
+                  },
+                },
+              },
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "Whether a create must provide this field. Set on a table's own fields only.",
+              "isDeprecated": false,
+              "name": "isRequiredOnCreate",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null,
+              },
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "Whether a create may set this field. Set on a table's own fields only.",
+              "isDeprecated": false,
+              "name": "isWritableOnCreate",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null,
+              },
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": "Whether an update may change this field. Set on a table's own fields only.",
+              "isDeprecated": false,
+              "name": "isWritableOnUpdate",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null,
+              },
+            },
           ],
           "inputFields": null,
           "interfaces": [],
@@ -1773,7 +1845,7 @@ based pagination. May not be used with \`last\`.",
           "possibleTypes": null,
         },
         {
-          "description": "How a client must serialize/parse a scalar — the one field-type detail standard GraphQL introspection cannot describe. Null for plain scalars whose wire format is obvious from gqlType.",
+          "description": "How a client must serialize and parse a scalar whose wire format gqlType alone does not settle. Null for plain scalars whose wire format is obvious from gqlType.",
           "enumValues": null,
           "fields": [
             {
@@ -2845,7 +2917,7 @@ based pagination. May not be used with \`last\`.",
           "possibleTypes": null,
         },
         {
-          "description": "Table inflection names",
+          "description": "Type and field names generated for this table",
           "enumValues": null,
           "fields": [
             {
@@ -3145,7 +3217,7 @@ based pagination. May not be used with \`last\`.",
             {
               "args": [],
               "deprecationReason": null,
-              "description": "GraphQL type name of the plane's files table",
+              "description": "GraphQL type name of the paired files table",
               "isDeprecated": false,
               "name": "filesType",
               "type": {
@@ -3161,7 +3233,7 @@ based pagination. May not be used with \`last\`.",
             {
               "args": [],
               "deprecationReason": null,
-              "description": "GraphQL type name of the plane's buckets table",
+              "description": "GraphQL type name of the paired buckets table",
               "isDeprecated": false,
               "name": "bucketsType",
               "type": {
@@ -3189,7 +3261,7 @@ based pagination. May not be used with \`last\`.",
             {
               "args": [],
               "deprecationReason": null,
-              "description": "The plane's GraphQL upload surface",
+              "description": "Upload mutations and types for this storage",
               "isDeprecated": false,
               "name": "upload",
               "type": {
@@ -3210,7 +3282,7 @@ based pagination. May not be used with \`last\`.",
           "possibleTypes": null,
         },
         {
-          "description": "The GraphQL upload surface of a storage plane, derived from the registry facts the presigned-url plugin emits from",
+          "description": "The upload mutations and types for a storage table pair",
           "enumValues": null,
           "fields": [
             {
@@ -3344,7 +3416,7 @@ based pagination. May not be used with \`last\`.",
             {
               "args": [],
               "deprecationReason": null,
-              "description": "Whether the upload input requires ownerId (entity-keyed plane)",
+              "description": "Whether the upload input requires ownerId",
               "isDeprecated": false,
               "name": "requiresOwnerId",
               "type": {
@@ -3495,7 +3567,7 @@ based pagination. May not be used with \`last\`.",
           "possibleTypes": null,
         },
         {
-          "description": "Per-table search configuration from @searchConfig smart tag",
+          "description": "Per-table search configuration",
           "enumValues": null,
           "fields": [
             {
@@ -3568,7 +3640,7 @@ based pagination. May not be used with \`last\`.",
           "possibleTypes": null,
         },
         {
-          "description": "i18n metadata for a table with @i18n tag",
+          "description": "i18n metadata for a translatable table",
           "enumValues": null,
           "fields": [
             {
@@ -3662,7 +3734,7 @@ based pagination. May not be used with \`last\`.",
           "possibleTypes": null,
         },
         {
-          "description": "Realtime metadata for a table with @realtime tag",
+          "description": "Realtime metadata for a table with change subscriptions",
           "enumValues": null,
           "fields": [
             {
@@ -3727,7 +3799,7 @@ based pagination. May not be used with \`last\`.",
             {
               "args": [],
               "deprecationReason": null,
-              "description": "Inflected scope key column (e.g. databaseId, orgId), null for global tiers",
+              "description": "Field name of the scope key (e.g. databaseId, orgId), null for global tiers",
               "isDeprecated": false,
               "name": "keyColumn",
               "type": {
@@ -3739,7 +3811,7 @@ based pagination. May not be used with \`last\`.",
             {
               "args": [],
               "deprecationReason": null,
-              "description": "SQL name of the entity table for entity scopes, else null",
+              "description": "Name of the entity table for entity scopes, else null",
               "isDeprecated": false,
               "name": "entityTable",
               "type": {
@@ -3751,7 +3823,7 @@ based pagination. May not be used with \`last\`.",
             {
               "args": [],
               "deprecationReason": null,
-              "description": "Provenance of the scope metadata (always 'smartTag')",
+              "description": "Where this scope metadata comes from",
               "isDeprecated": false,
               "name": "source",
               "type": {

@@ -197,9 +197,17 @@ export function buildReverseRelations(
   return { hasOne, hasMany };
 }
 
+// A relation the many-to-many plugin declared is dropped when the final schema
+// has no field for it. A detected one is kept with a null fieldName and type,
+// which tells clients the link exists but no GraphQL field serves it.
+//
+// A declared relation's `leftRelationName` is the backward relation on the
+// left table. A detected one names the junction's own forward key instead, so
+// it never depends on, or names, a backward relation the API may hide.
 function buildManyToManyRelation(
   details: PgManyToManyRelationDetails,
   context: BuildContext,
+  detected = false,
 ): ManyToManyRelation | null {
   const leftCodec = getResourceCodec(details.leftTable);
   const junctionCodec = getResourceCodec(details.junctionTable);
@@ -238,9 +246,11 @@ function buildManyToManyRelation(
       },
     ])
     : null;
-  if (context.schema && !executable) return null;
+  if (context.schema && !executable && !detected) return null;
 
-  const leftRelation = getRelation(details.leftTable, details.leftRelationName);
+  const leftRelation = detected
+    ? flipped(getRelation(details.junctionTable, details.leftRelationName))
+    : getRelation(details.leftTable, details.leftRelationName);
   const junctionRightRelation = getRelation(details.junctionTable, details.rightRelationName);
   if (!leftRelation || !junctionRightRelation) return null;
 
@@ -251,10 +261,12 @@ function buildManyToManyRelation(
 
   const relationFieldName =
     executable?.name ??
-    safeInflection(
-      () => context.build.inflection._manyToManyRelation?.(details),
-      details.rightRelationName || rightCodec.name || null,
-    );
+    (detected
+      ? null
+      : safeInflection(
+        () => context.build.inflection._manyToManyRelation?.(details),
+        details.rightRelationName || rightCodec.name || null,
+      ));
 
   const junctionLeftConstraint = buildForeignKeyConstraint(
     details.leftRelationName || `${junctionCodec.name}_${leftCodec.name}_fkey`,
@@ -287,7 +299,7 @@ function buildManyToManyRelation(
 
   return {
     fieldName: relationFieldName,
-    type: executable?.typeName ?? rightCodec.name ?? null,
+    type: executable?.typeName ?? (detected ? null : rightCodec.name ?? null),
     junctionTable: {
       name: context.schema ? junctionTypeName : junctionCodec.name || 'unknown',
     },
@@ -323,13 +335,45 @@ function buildManyToManyRelation(
   };
 }
 
+// A forward relation read from the other end, so it lines up with a backward one.
+function flipped(relation: PgRelation | null): PgRelation | null {
+  return relation
+    ? { ...relation, localAttributes: relation.remoteAttributes, remoteAttributes: relation.localAttributes }
+    : null;
+}
+
 export function buildManyToManyRelations(
   resource: PgTableResource,
   context: BuildContext,
 ): ManyToManyRelation[] {
-  const relationships =
-    context.build.pgManyToManyRealtionshipsByResource?.get(resource) ?? [];
-  return relationships
-    .map((details) => buildManyToManyRelation(details, context))
-    .filter((relation): relation is ManyToManyRelation => relation !== null);
+  const declared = (
+    context.build.pgManyToManyRealtionshipsByResource?.get(resource) ?? []
+  ).flatMap((details) => {
+    const relation = buildManyToManyRelation(details, context);
+    return relation ? [{ details, relation }] : [];
+  });
+  const emit = (details: PgManyToManyRelationDetails) => {
+    if (details.junctionTable.codec) context.emittedJunctions?.add(details.junctionTable.codec);
+  };
+  declared.forEach((entry) => emit(entry.details));
+  const detected = (
+    (resource.codec && context.junctions?.detected.get(resource.codec)) || []
+  ).filter(
+    (details) =>
+      !declared.some(
+        (entry) =>
+          entry.details.junctionTable.codec === details.junctionTable.codec &&
+          entry.details.rightRelationName === details.rightRelationName,
+      ),
+  );
+
+  return [
+    ...declared.map((entry) => entry.relation),
+    ...detected.flatMap((details) => {
+      const relation = buildManyToManyRelation(details, context, true);
+      if (!relation) return [];
+      emit(details);
+      return [relation];
+    }),
+  ];
 }

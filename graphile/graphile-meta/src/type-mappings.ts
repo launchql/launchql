@@ -93,6 +93,12 @@ function extractEnumMeta(
   };
 }
 
+/** The allowed values the gather phase recorded on a column, if any. */
+export function readAllowedValues(attr: PgAttribute | null | undefined): string[] | null {
+  const values = attr?.extensions?.allowedValues;
+  return Array.isArray(values) && values.every((v) => typeof v === 'string') ? values : null;
+}
+
 export interface BuildFieldMetaOptions {
   isPrimaryKey?: boolean;
   isForeignKey?: boolean;
@@ -128,5 +134,10 @@ export function buildFieldMeta(
     isForeignKey: options?.isForeignKey ?? false,
     description: attr?.description ?? null,
     enumValues: extractEnumMeta(attr?.codec),
+    // Set by the table builder for exposed fields only.
+    allowedValues: null,
+    isRequiredOnCreate: null,
+    isWritableOnCreate: null,
+    isWritableOnUpdate: null,
   };
 }

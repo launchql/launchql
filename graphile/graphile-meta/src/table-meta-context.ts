@@ -1,6 +1,7 @@
 import type { GraphQLSchema } from 'graphql';
 
 import { createAttributeInflector } from './inflection-utils';
+import type { JunctionIndex } from './junction-meta-builders';
 import { buildFieldMeta } from './type-mappings';
 import type {
   FieldMeta,
@@ -16,6 +17,12 @@ export interface BuildContext {
   build: MetaBuild;
   inflectAttr: AttributeInflector;
   schema?: GraphQLSchema;
+  /** Many-to-many relations implied by detected junction tables. */
+  junctions?: JunctionIndex;
+  /** Codecs of the junction tables named by a reported many-to-many relation. */
+  emittedJunctions?: Set<PgCodec>;
+  /** Memo for `exposedColumns`, per table codec. */
+  exposedColumns?: Map<PgCodec, Map<string, string | null>>;
 }
 
 export type TableResourceWithCodec = PgTableResource & {

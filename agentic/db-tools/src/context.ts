@@ -4,8 +4,8 @@ import path from 'node:path';
 import { api, auth, modules } from '@constructive-io/sdk';
 import { parseDotenv } from '12factor-env/dotenv';
 
-import { probeDatabase } from './db-probe';
-import { DEFAULT_DATA_TOKEN_SKEW_MS, getHost } from './host';
+import { probeDatabase, type UnreachableCause } from './db-probe';
+import { DEFAULT_DATA_TOKEN_SKEW_MS, getHost, reprovisionAdvice } from './host';
 
 const DEFAULT_API_ENDPOINT = 'http://api.localhost:3000/graphql';
 const DEFAULT_MODULES_ENDPOINT = 'http://modules.localhost:3000/graphql';
@@ -26,12 +26,16 @@ export type ProjectContext = {
   // Per-DB data/CRUD endpoint (api-<db>.localhost). Empty when DATABASE_NAME is
   // absent — record tools need it; schema tools use `api` and ignore it.
   dataEndpoint: string;
+  // The database's schema hash as the binding probe read it; it changes on
+  // every schema change. Undefined on a backend that doesn't serve it.
+  hash?: string;
 };
 
 export type ProjectContextFailureCode =
   | 'no-env'
   | 'missing-credentials'
   | 'db-missing'
+  | 'db-suspended'
   | 'account-mismatch'
   | 'backend-unreachable'
   | 'schema-unresolved';
@@ -40,6 +44,8 @@ export type ResolveResult = {
   context: ProjectContext | null;
   reason: string;
   code?: ProjectContextFailureCode;
+  /** Why the backend couldn't answer, with code 'backend-unreachable'. */
+  cause?: UnreachableCause;
 };
 
 // The project values pi needs, and where they come from. A scaffolded project
@@ -182,17 +188,18 @@ export async function resolveProjectContext(
     databaseId,
     signInHint: host.signInHint,
   });
-  if (probe.outcome === 'unreachable') {
+  if (probe.status === 'unreachable') {
     return {
       context: null,
-      reason: `Could not reach the Constructive backend at ${controlApiEndpoint} (${probe.detail}). Check it is running, then retry.`,
+      reason: unreachableReason(controlApiEndpoint, probe.cause, probe.detail),
       code: 'backend-unreachable',
+      cause: probe.cause,
     };
   }
-  if (probe.outcome === 'missing') {
+  if (probe.status === 'missing') {
     return {
       context: null,
-      reason: `The bound database (DATABASE_ID=${databaseId}) no longer exists on this backend. Re-provision with provision_database (reprovision: true) — the schema is rebuilt from the project; records do not carry over.`,
+      reason: `The bound database (DATABASE_ID=${databaseId}) no longer exists on this backend, or this account lost access to it. ${reprovisionAdvice(host)}`,
       code: 'db-missing',
     };
   }
@@ -212,8 +219,19 @@ export async function resolveProjectContext(
   ) {
     return {
       context: null,
-      reason: `The bound database (DATABASE_ID=${databaseId}) was provisioned under a different account than the one signed in. Re-provision with provision_database (reprovision: true) to rebuild it under this account — the schema is rebuilt from the project; records do not carry over.`,
+      reason: `The bound database (DATABASE_ID=${databaseId}) was provisioned under a different account than the one signed in. ${reprovisionAdvice(host)}`,
       code: 'account-mismatch',
+    };
+  }
+
+  // A suspended database still holds its data, so it is never a reason to
+  // reprovision: nothing can read or change it until the hold is lifted.
+  if (probe.status === 'suspended') {
+    const why = probe.suspendedReason ? ` (${probe.suspendedReason})` : '';
+    return {
+      context: null,
+      reason: `The bound database (DATABASE_ID=${databaseId}) is suspended${why} since ${probe.suspendedAt}. Its data is kept, but nothing can read or change it until the suspension is lifted.`,
+      code: 'db-suspended',
     };
   }
 
@@ -241,9 +259,24 @@ export async function resolveProjectContext(
       databaseName,
       accessToken,
       dataEndpoint,
+      hash: probe.hash,
     },
     reason: '',
   };
+}
+
+function unreachableReason(endpoint: string, cause: UnreachableCause, detail: string): string {
+  switch (cause) {
+  case 'auth':
+    // The probe's detail says the credential was rejected and how to sign in.
+    return `Could not check the bound database on the Constructive backend at ${endpoint}: ${detail}`;
+  case 'error':
+    return `The Constructive backend at ${endpoint} answered with an error while checking the bound database (${detail}). Retry; if it keeps failing, check the backend's logs.`;
+  case 'server':
+    return `The Constructive backend at ${endpoint} is failing (${detail}). Check it is running, then retry.`;
+  default:
+    return `Could not reach the Constructive backend at ${endpoint} (${detail}). Check it is running, then retry.`;
+  }
 }
 
 const needsAuthReason = (): string =>
