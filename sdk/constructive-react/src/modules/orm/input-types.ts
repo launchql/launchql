@@ -461,7 +461,7 @@ export interface Blueprint {
   /** Timestamp when this blueprint was last modified. */
   updatedAt?: string | null;
 }
-/** Tracks individual construction attempts of a blueprint. Each time construct_blueprint() is called, a new record is created here. This separates the editable blueprint definition from its build history, allowing blueprints to be re-executed, constructed into multiple databases, and maintain an audit trail of all construction attempts. */
+/** Tracks individual construction attempts of a blueprint. Each time construct_blueprint() is called, a new record is created here as pending and a blueprint:construct job builds it in the background. This separates the editable blueprint definition from its build history, allowing blueprints to be re-executed, constructed into multiple databases, and maintain an audit trail of all construction attempts, including failed ones. */
 export interface BlueprintConstruction {
   /** The blueprint that was constructed. */
   blueprintId?: string | null;
@@ -473,11 +473,13 @@ export interface BlueprintConstruction {
   createdAt?: string | null;
   /** The database the blueprint was constructed into. */
   databaseId?: string | null;
+  /** The coded error ({"code", "context", "class"} as raised through errors.raise_error, or {"code": <SQLSTATE>, "message"} for a database error) a failed construction ended with. NULL unless status is failed. */
+  error?: Record<string, unknown> | null;
   /** Unique identifier for this construction attempt. */
   id: string;
   /** The default schema used for tables that did not specify an explicit schema_name. NULL if not yet resolved. */
   schemaId?: string | null;
-  /** Execution state of this construction attempt. pending: created but not yet started. constructing: currently executing. constructed: successfully completed. A failed construction raises and rolls back, so it leaves no row. */
+  /** Execution state of this construction attempt. pending: enqueued, the blueprint:construct job has not started. constructing: the job is executing. constructed: successfully completed. failed: the job raised; the build rolled back and error carries its coded error. */
   status?: string | null;
   /** Mapping of table names to created table UUIDs, populated after successful construction. Format: {"products": "uuid", "categories": "uuid", ...}. Defaults to empty object. */
   tableMap?: Record<string, unknown> | null;
@@ -928,6 +930,7 @@ export interface DomainModule {
   publicSchemaName?: string | null;
   schemaId?: string | null;
   scope?: string | null;
+  sweepUnverifiedDomainsFunction?: string | null;
 }
 export interface EmailSenderModule {
   apiName?: string | null;
@@ -3158,6 +3161,7 @@ export type BlueprintConstructionSelect = {
   constructedDefinition?: boolean;
   createdAt?: boolean;
   databaseId?: boolean;
+  error?: boolean;
   id?: boolean;
   schemaId?: boolean;
   status?: boolean;
@@ -3619,6 +3623,7 @@ export type DomainModuleSelect = {
   publicSchemaName?: boolean;
   schemaId?: boolean;
   scope?: boolean;
+  sweepUnverifiedDomainsFunction?: boolean;
   catalogModule?: {
     select: CatalogModuleSelect;
   };
@@ -5589,6 +5594,8 @@ export interface BlueprintConstructionFilter {
   createdAt?: DatetimeFilter;
   /** Filter by the object’s `databaseId` field. */
   databaseId?: UUIDFilter;
+  /** Filter by the object’s `error` field. */
+  error?: JSONFilter;
   /** Filter by the object’s `id` field. */
   id?: UUIDFilter;
   /** Negates the expression. */
@@ -6519,6 +6526,8 @@ export interface DomainModuleFilter {
   schemaId?: UUIDFilter;
   /** Filter by the object’s `scope` field. */
   scope?: StringFilter;
+  /** Filter by the object’s `sweepUnverifiedDomainsFunction` field. */
+  sweepUnverifiedDomainsFunction?: StringFilter;
 }
 export interface EmailSenderModuleFilter {
   /** Checks for all expressions in this list. */
@@ -9968,6 +9977,8 @@ export type BlueprintConstructionOrderBy =
   | 'CREATED_AT_DESC'
   | 'DATABASE_ID_ASC'
   | 'DATABASE_ID_DESC'
+  | 'ERROR_ASC'
+  | 'ERROR_DESC'
   | 'ID_ASC'
   | 'ID_DESC'
   | 'NATURAL'
@@ -10766,7 +10777,9 @@ export type DomainModuleOrderBy =
   | 'SCHEMA_ID_ASC'
   | 'SCHEMA_ID_DESC'
   | 'SCOPE_ASC'
-  | 'SCOPE_DESC';
+  | 'SCOPE_DESC'
+  | 'SWEEP_UNVERIFIED_DOMAINS_FUNCTION_ASC'
+  | 'SWEEP_UNVERIFIED_DOMAINS_FUNCTION_DESC';
 export type EmailSenderModuleOrderBy =
   | 'API_NAME_ASC'
   | 'API_NAME_DESC'
@@ -13893,6 +13906,7 @@ export interface CreateBlueprintConstructionInput {
     constructedAt?: string;
     constructedDefinition?: Record<string, unknown>;
     databaseId: string;
+    error?: Record<string, unknown>;
     schemaId?: string;
     status?: string;
     tableMap?: Record<string, unknown>;
@@ -13903,6 +13917,7 @@ export interface BlueprintConstructionPatch {
   constructedAt?: string | null;
   constructedDefinition?: Record<string, unknown> | null;
   databaseId?: string | null;
+  error?: Record<string, unknown> | null;
   schemaId?: string | null;
   status?: string | null;
   tableMap?: Record<string, unknown> | null;
@@ -14846,6 +14861,7 @@ export interface CreateDomainModuleInput {
     publicSchemaName?: string;
     schemaId?: string;
     scope: string;
+    sweepUnverifiedDomainsFunction?: string;
   };
 }
 export interface DomainModulePatch {
@@ -14872,6 +14888,7 @@ export interface DomainModulePatch {
   publicSchemaName?: string | null;
   schemaId?: string | null;
   scope?: string | null;
+  sweepUnverifiedDomainsFunction?: string | null;
 }
 export interface UpdateDomainModuleInput {
   clientMutationId?: string;
@@ -18741,11 +18758,13 @@ export interface BlueprintConstructionInput {
   createdAt?: string;
   /** The database the blueprint was constructed into. */
   databaseId: string;
+  /** The coded error ({"code", "context", "class"} as raised through errors.raise_error, or {"code": <SQLSTATE>, "message"} for a database error) a failed construction ended with. NULL unless status is failed. */
+  error?: Record<string, unknown>;
   /** Unique identifier for this construction attempt. */
   id?: string;
   /** The default schema used for tables that did not specify an explicit schema_name. NULL if not yet resolved. */
   schemaId?: string;
-  /** Execution state of this construction attempt. pending: created but not yet started. constructing: currently executing. constructed: successfully completed. A failed construction raises and rolls back, so it leaves no row. */
+  /** Execution state of this construction attempt. pending: enqueued, the blueprint:construct job has not started. constructing: the job is executing. constructed: successfully completed. failed: the job raised; the build rolled back and error carries its coded error. */
   status?: string;
   /** Mapping of table names to created table UUIDs, populated after successful construction. Format: {"products": "uuid", "categories": "uuid", ...}. Defaults to empty object. */
   tableMap?: Record<string, unknown>;
@@ -19231,6 +19250,7 @@ export interface DomainModuleInput {
   publicSchemaName?: string;
   schemaId?: string;
   scope: string;
+  sweepUnverifiedDomainsFunction?: string;
 }
 /** An input for mutations affecting `EmailSenderModule` */
 export interface EmailSenderModuleInput {
@@ -20945,6 +20965,8 @@ export interface BlueprintConstructionFilter {
   createdAt?: DatetimeFilter;
   /** Filter by the object’s `databaseId` field. */
   databaseId?: UUIDFilter;
+  /** Filter by the object’s `error` field. */
+  error?: JSONFilter;
   /** Filter by the object’s `id` field. */
   id?: UUIDFilter;
   /** Negates the expression. */
@@ -21271,6 +21293,8 @@ export interface DomainModuleFilter {
   schemaId?: UUIDFilter;
   /** Filter by the object’s `scope` field. */
   scope?: StringFilter;
+  /** Filter by the object’s `sweepUnverifiedDomainsFunction` field. */
+  sweepUnverifiedDomainsFunction?: StringFilter;
 }
 /** A filter to be used against `RouteModule` object types. All fields are combined with a logical ‘and.’ */
 export interface RouteModuleFilter {

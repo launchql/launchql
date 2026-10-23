@@ -236,6 +236,10 @@ export const customMutationKeys = {
     identifier
       ? (['mutation', 'enableTotp', identifier] as const)
       : (['mutation', 'enableTotp'] as const),
+  /** Mutation key for exchangeNativeHandoff */ exchangeNativeHandoff: (identifier?: string) =>
+    identifier
+      ? (['mutation', 'exchangeNativeHandoff', identifier] as const)
+      : (['mutation', 'exchangeNativeHandoff'] as const),
   /** Mutation key for extendTokenExpires */ extendTokenExpires: (identifier?: string) =>
     identifier
       ? (['mutation', 'extendTokenExpires', identifier] as const)

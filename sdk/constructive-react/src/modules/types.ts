@@ -226,6 +226,7 @@ export interface BlueprintConstruction {
   constructedDefinition: unknown | null;
   createdAt: string | null;
   databaseId: string | null;
+  error: unknown | null;
   id: string | null;
   schemaId: string | null;
   status: string | null;
@@ -624,6 +625,7 @@ export interface DomainModule {
   publicSchemaName: string | null;
   schemaId: string | null;
   scope: string | null;
+  sweepUnverifiedDomainsFunction: string | null;
 }
 export interface EmailSenderModule {
   apiName: string | null;

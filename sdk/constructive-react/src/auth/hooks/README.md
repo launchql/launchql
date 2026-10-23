@@ -129,6 +129,7 @@ function App() {
 | `useEnableEmailMfaMutation` | Mutation | enableEmailMfa |
 | `useEnableSmsMfaMutation` | Mutation | enableSmsMfa |
 | `useEnableTotpMutation` | Mutation | enableTotp |
+| `useExchangeNativeHandoffMutation` | Mutation | exchangeNativeHandoff |
 | `useExtendTokenExpiresMutation` | Mutation | extendTokenExpires |
 | `useForgotPasswordMutation` | Mutation | forgotPassword |
 | `useGenerateBackupCodesMutation` | Mutation | generateBackupCodes |
@@ -738,6 +739,17 @@ enableTotp
   | Argument | Type |
   |----------|------|
   | `input` | EnableTotpInput (required) |
+
+### `useExchangeNativeHandoffMutation`
+
+exchangeNativeHandoff
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | ExchangeNativeHandoffInput (required) |
 
 ### `useExtendTokenExpiresMutation`
 
