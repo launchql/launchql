@@ -188,9 +188,17 @@ describe('getApiConfig with scoped routing enabled', () => {
     rows: (params[0] as string[]).map((schemaName) => ({ schema_name: schemaName }))
   });
 
+  const ownPlane = {
+    database_id: 'db-platform',
+    schema_name: 'routing_public',
+    resolver_schema_name: 'routing_private',
+    resolver_function_name: 'resolve_route'
+  };
+
   it('resolves via resolve_route (host only) as the sole resolver', async () => {
     const query = jest.fn(async (sql: string, params: unknown[]) => {
       if (sql.includes('information_schema.schemata')) return schemaValidationRows(params);
+      if (sql.includes('function_resolution.routing_planes()')) return { rows: [ownPlane] };
       if (sql.includes('resolve_route')) return { rows: [matchedRoute()] };
       throw new Error(`unexpected query: ${sql}`);
     });
@@ -200,7 +208,7 @@ describe('getApiConfig with scoped routing enabled', () => {
 
     expect(result).toEqual(expect.objectContaining({ apiId: 'api-1', dbname: 'tenant_db' }));
     expect(query).toHaveBeenCalledWith(
-      expect.stringContaining('resolve_route'),
+      expect.stringContaining(`"routing_private".resolve_route($1, '/', NULL)`),
       ['api.example.com']
     );
   });
@@ -208,8 +216,8 @@ describe('getApiConfig with scoped routing enabled', () => {
   it('returns null (no fallback) when resolve_route has no match', async () => {
     const query = jest.fn(async (sql: string, params: unknown[]) => {
       if (sql.includes('information_schema.schemata')) return schemaValidationRows(params);
+      if (sql.includes('function_resolution.routing_planes()')) return { rows: [ownPlane] };
       if (sql.includes('resolve_route')) return { rows: [noMatchRoute()] };
-      if (sql.includes('function_resolution.routing_planes()')) return { rows: [] };
       throw new Error(`unexpected query (no legacy fallback): ${sql}`);
     });
     mockGetPgPool.mockReturnValue(createPool(query) as never);
@@ -225,7 +233,14 @@ describe('getApiConfig with scoped routing enabled', () => {
       if (sql.includes('information_schema.schemata')) return schemaValidationRows(params);
       if (sql.includes('resolve_route')) return { rows: [noMatchRoute()] };
       if (sql.includes('function_resolution.routing_planes()')) {
-        return { rows: [{ database_id: 'db-2', schema_name: 'tenant-routing-public', resolver_function_name: null as string | null }] };
+        return {
+          rows: [ownPlane, {
+            database_id: 'db-2',
+            schema_name: 'tenant-routing-public',
+            resolver_schema_name: 'tenant-routing-private',
+            resolver_function_name: null as string | null
+          }]
+        };
       }
       throw new Error(`unexpected query: ${sql}`);
     });
@@ -234,6 +249,44 @@ describe('getApiConfig with scoped routing enabled', () => {
     await expect(
       getApiConfig(createOptions(), createRequest({ host: 'nomatch.example.com' }))
     ).rejects.toMatchObject({ code: 'ROUTING_PLANE_INCOMPLETE', databaseId: 'db-2' });
+  });
+
+  it('throws ROUTING_PLANE_INCOMPLETE when a plane names no resolver schema', async () => {
+    const query = jest.fn(async (sql: string, params: unknown[]) => {
+      if (sql.includes('information_schema.schemata')) return schemaValidationRows(params);
+      if (sql.includes('function_resolution.routing_planes()')) {
+        return { rows: [{ ...ownPlane, resolver_schema_name: null as string | null }] };
+      }
+      throw new Error(`unexpected query: ${sql}`);
+    });
+    mockGetPgPool.mockReturnValue(createPool(query) as never);
+
+    await expect(
+      getApiConfig(createOptions(), createRequest({ host: 'api.example.com' }))
+    ).rejects.toMatchObject({ code: 'ROUTING_PLANE_INCOMPLETE', databaseId: 'db-platform' });
+    expect(query.mock.calls.some(([sql]) => String(sql).includes('resolve_route'))).toBe(false);
+  });
+
+  it('resolves a tenant plane host through that plane resolver schema', async () => {
+    const tenantPlane = {
+      database_id: 'db-1',
+      schema_name: 'tenant-routing-public',
+      resolver_schema_name: 'tenant-routing-private',
+      resolver_function_name: 'resolve_route'
+    };
+    const query = jest.fn(async (sql: string, params: unknown[]) => {
+      if (sql.includes('information_schema.schemata')) return schemaValidationRows(params);
+      if (sql.includes('function_resolution.routing_planes()')) return { rows: [ownPlane, tenantPlane] };
+      if (sql.includes('"routing_private".resolve_route')) return { rows: [noMatchRoute()] };
+      if (sql.includes('"tenant-routing-private".resolve_route')) return { rows: [matchedRoute()] };
+      throw new Error(`unexpected query: ${sql}`);
+    });
+    mockGetPgPool.mockReturnValue(createPool(query) as never);
+
+    const result = await getApiConfig(createOptions(), createRequest({ host: 'api.example.com' }));
+
+    expect(result).toEqual(expect.objectContaining({ apiId: 'api-1' }));
+    expect(query.mock.calls.some(([sql]) => String(sql).includes('public".resolve_route'))).toBe(false);
   });
 
   it('throws NO_DATABASE_ID when a route resolves without a database id (no default database)', async () => {
@@ -249,6 +302,7 @@ describe('getApiConfig with scoped routing enabled', () => {
     });
     const query = jest.fn(async (sql: string, params: unknown[]) => {
       if (sql.includes('information_schema.schemata')) return schemaValidationRows(params);
+      if (sql.includes('function_resolution.routing_planes()')) return { rows: [ownPlane] };
       if (sql.includes('resolve_route')) return { rows: [routeWithoutDbId] };
       throw new Error(`unexpected query: ${sql}`);
     });
