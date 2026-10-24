@@ -234,6 +234,36 @@ describe('createAdmissionControlMiddleware', () => {
       expect(next.next).toHaveBeenCalledTimes(1);
     });
 
+    it('does not leak the slot when the client hangs up while queued', async () => {
+      const middleware = createAdmissionControlMiddleware();
+      const bounds = protection({ maxConcurrentRequests: 1, maxQueueWaitMs: 1_000 });
+
+      const held = send(middleware, fakeReq({ protection: bounds, ip: '10.0.0.1' }));
+      await held.done;
+
+      const queued = send(middleware, fakeReq({ protection: bounds, ip: '10.0.0.2' }));
+      await Promise.resolve();
+      expect(queued.next).not.toHaveBeenCalled();
+
+      // The queued client gives up before a slot comes free.
+      queued.res.emit('close');
+      held.res.emit('finish');
+      await queued.done;
+
+      // Nobody is there to handle the request, so it must not start...
+      expect(queued.next).not.toHaveBeenCalled();
+      expect(queued.res.captured.status).toBeUndefined();
+
+      // ...and the slot it would have been handed is free for the next caller.
+      const next = send(
+        middleware,
+        fakeReq({ protection: protection({ maxConcurrentRequests: 1, maxQueueWaitMs: 0 }), ip: '10.0.0.3' })
+      );
+      await next.done;
+      expect(next.next).toHaveBeenCalledTimes(1);
+      expect(next.res.captured.status).toBeUndefined();
+    });
+
     it('refuses a request that waited out maxQueueWaitMs', async () => {
       const middleware = createAdmissionControlMiddleware({ trustedProxyHops: 0 });
       const bounds = protection({ maxConcurrentRequests: 1, maxQueueWaitMs: 20 });
