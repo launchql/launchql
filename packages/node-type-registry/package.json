@@ -1,6 +1,6 @@
 {
   "name": "node-type-registry",
-  "version": "1.21.0",
+  "version": "1.22.0",
   "description": "Node type definitions for the Constructive blueprint system. Single source of truth for all Authz*, Data*, Relation*, and View* node types.",
   "author": "Constructive <developers@constructive.io>",
   "main": "index.js",

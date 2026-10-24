@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.19.0](https://github.com/constructive-io/constructive/compare/@agentic-kit/cli@0.18.8...@agentic-kit/cli@0.19.0) (2026-10-24)
+
+**Note:** Version bump only for package @agentic-kit/cli
+
 ## [0.18.8](https://github.com/constructive-io/constructive/compare/@agentic-kit/cli@0.18.7...@agentic-kit/cli@0.18.8) (2026-10-23)
 
 **Note:** Version bump only for package @agentic-kit/cli

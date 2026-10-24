@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.18.0](https://github.com/constructive-io/constructive/compare/@constructive-io/query-builder@3.17.2...@constructive-io/query-builder@3.18.0) (2026-10-24)
+
+### Bug Fixes
+
+- **deps:** bump pgsql-parser packages (libpg-query 18.2.0) ([3a32f74](https://github.com/constructive-io/constructive/commit/3a32f74e77ad6eee8b4cff0450b09f752b4cd6ec))
+
 ## [3.17.2](https://github.com/constructive-io/constructive/compare/@constructive-io/query-builder@3.17.1...@constructive-io/query-builder@3.17.2) (2026-10-23)
 
 **Note:** Version bump only for package @constructive-io/query-builder

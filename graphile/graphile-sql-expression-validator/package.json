@@ -1,6 +1,6 @@
 {
   "name": "graphile-sql-expression-validator",
-  "version": "3.14.0",
+  "version": "3.15.0",
   "description": "SQL expression validation for PostGraphile v5",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

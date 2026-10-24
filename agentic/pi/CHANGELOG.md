@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.28.0](https://github.com/constructive-io/constructive/compare/@agentic-kit/pi@0.27.5...@agentic-kit/pi@0.28.0) (2026-10-24)
+
+**Note:** Version bump only for package @agentic-kit/pi
+
 ## [0.27.5](https://github.com/constructive-io/constructive/compare/@agentic-kit/pi@0.27.4...@agentic-kit/pi@0.27.5) (2026-10-23)
 
 **Note:** Version bump only for package @agentic-kit/pi

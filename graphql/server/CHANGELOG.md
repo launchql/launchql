@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.33.0](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.32.7...@constructive-io/graphql-server@5.33.0) (2026-10-24)
+
+### Bug Fixes
+
+- **graphql-server:** declare cookie-parser as a runtime dependency ([4d195f0](https://github.com/constructive-io/constructive/commit/4d195f0bdabd38673cb76a708766700e73174b07))
+
 ## [5.32.7](https://github.com/constructive-io/constructive/compare/@constructive-io/graphql-server@5.32.6...@constructive-io/graphql-server@5.32.7) (2026-10-23)
 
 **Note:** Version bump only for package @constructive-io/graphql-server

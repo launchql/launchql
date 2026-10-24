@@ -1,6 +1,6 @@
 {
   "name": "@pgpmjs/pglite-adapter",
-  "version": "1.19.7",
+  "version": "1.20.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "PGlite driver for pgpm — registers an in-process PGlite instance as the pg-cache pool factory so the unmodified pgpm engine deploys into PGlite (WASM Postgres) with no server",
   "main": "index.js",

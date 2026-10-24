@@ -1,6 +1,6 @@
 {
   "name": "@pgpmjs/import",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "pgpm import — pgpm-itize arbitrary SQL dumps (pg_dump output, raw .sql) through the dials pipeline",
   "main": "index.js",

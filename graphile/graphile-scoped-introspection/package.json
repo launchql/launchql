@@ -1,6 +1,6 @@
 {
   "name": "graphile-scoped-introspection",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Opt-in schema-scoped PostgreSQL introspection for Graphile",
   "author": "Constructive <developers@constructive.io>",
   "homepage": "https://github.com/constructive-io/constructive",

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.30.0](https://github.com/constructive-io/constructive/compare/@pgpmjs/transform@0.29.0...@pgpmjs/transform@0.30.0) (2026-10-24)
+
+### Bug Fixes
+
+- **deps:** bump pgsql-parser packages (libpg-query 18.2.0) ([3a32f74](https://github.com/constructive-io/constructive/commit/3a32f74e77ad6eee8b4cff0450b09f752b4cd6ec))
+
 # [0.29.0](https://github.com/constructive-io/constructive/compare/@pgpmjs/transform@0.28.10...@pgpmjs/transform@0.29.0) (2026-10-14)
 
 **Note:** Version bump only for package @pgpmjs/transform

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/constructive-io/constructive/compare/@pgpmjs/pglite-adapter@1.19.7...@pgpmjs/pglite-adapter@1.20.0) (2026-10-24)
+
+**Note:** Version bump only for package @pgpmjs/pglite-adapter
+
 ## [1.19.7](https://github.com/constructive-io/constructive/compare/@pgpmjs/pglite-adapter@1.19.6...@pgpmjs/pglite-adapter@1.19.7) (2026-10-23)
 
 **Note:** Version bump only for package @pgpmjs/pglite-adapter

@@ -1,6 +1,6 @@
 {
   "name": "@pgpmjs/diff",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "author": "Constructive <developers@constructive.io>",
   "description": "pgpm diff — identity-keyed semantic schema diff between pgpm modules, SQL dumps, and live databases",
   "main": "index.js",
