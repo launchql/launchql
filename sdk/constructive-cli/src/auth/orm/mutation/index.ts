@@ -26,6 +26,7 @@ import type {
   EnableEmailMfaInput,
   EnableSmsMfaInput,
   EnableTotpInput,
+  ExchangeNativeHandoffInput,
   ExtendTokenExpiresInput,
   ForgotPasswordInput,
   GenerateBackupCodesInput,
@@ -81,6 +82,7 @@ import type {
   EnableEmailMfaPayload,
   EnableSmsMfaPayload,
   EnableTotpPayload,
+  ExchangeNativeHandoffPayload,
   ExtendTokenExpiresPayload,
   ForgotPasswordPayload,
   GenerateBackupCodesPayload,
@@ -136,6 +138,7 @@ import type {
   EnableEmailMfaPayloadSelect,
   EnableSmsMfaPayloadSelect,
   EnableTotpPayloadSelect,
+  ExchangeNativeHandoffPayloadSelect,
   ExtendTokenExpiresPayloadSelect,
   ForgotPasswordPayloadSelect,
   GenerateBackupCodesPayloadSelect,
@@ -189,6 +192,10 @@ export interface ConfirmDeleteAccountVariables {
 export interface ConfirmTotpSetupVariables {
   input: ConfirmTotpSetupInput;
 }
+/**
+ * Variables for createApiKey
+ * Mint an API key for the current user; the plaintext key is returned once. access_level: full_access (default) or read_only. mfa_level: none (default) or verified; verified needs a fresh MFA proof on the calling session. A key minted while authenticated by another API key never outlives that key.
+ */
 export interface CreateApiKeyVariables {
   input: CreateApiKeyInput;
 }
@@ -230,6 +237,9 @@ export interface EnableSmsMfaVariables {
 }
 export interface EnableTotpVariables {
   input: EnableTotpInput;
+}
+export interface ExchangeNativeHandoffVariables {
+  input: ExchangeNativeHandoffInput;
 }
 export interface ExtendTokenExpiresVariables {
   input: ExtendTokenExpiresInput;
@@ -899,6 +909,35 @@ export function createMutationOperations(client: OrmClient) {
           ],
           connectionFieldsMap,
           'EnableTotpPayload'
+        ),
+      }),
+    exchangeNativeHandoff: <S extends ExchangeNativeHandoffPayloadSelect>(
+      args: ExchangeNativeHandoffVariables,
+      options: {
+        select: S;
+      } & StrictSelect<S, ExchangeNativeHandoffPayloadSelect>
+    ) =>
+      new QueryBuilder<{
+        exchangeNativeHandoff: InferSelectResult<ExchangeNativeHandoffPayload, S> | null;
+      }>({
+        client,
+        operation: 'mutation',
+        operationName: 'ExchangeNativeHandoff',
+        fieldName: 'exchangeNativeHandoff',
+        ...buildCustomDocument(
+          'mutation',
+          'ExchangeNativeHandoff',
+          'exchangeNativeHandoff',
+          options.select,
+          args,
+          [
+            {
+              name: 'input',
+              type: 'ExchangeNativeHandoffInput!',
+            },
+          ],
+          connectionFieldsMap,
+          'ExchangeNativeHandoffPayload'
         ),
       }),
     extendTokenExpires: <S extends ExtendTokenExpiresPayloadSelect>(

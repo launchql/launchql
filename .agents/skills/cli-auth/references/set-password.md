@@ -7,7 +7,7 @@ Execute the setPassword mutation
 ## Usage
 
 ```bash
-csdk set-password --input.clientMutationId <String> --input.currentPassword <String> --input.newPassword <String>
+csdk set-password --input.clientMutationId <String> --input.currentPassword <String> --input.newPassword <String> --input.signOutOtherSessions <Boolean>
 ```
 
 ## Examples
@@ -15,5 +15,5 @@ csdk set-password --input.clientMutationId <String> --input.currentPassword <Str
 ### Run setPassword
 
 ```bash
-csdk set-password --input.clientMutationId <String> --input.currentPassword <String> --input.newPassword <String>
+csdk set-password --input.clientMutationId <String> --input.currentPassword <String> --input.newPassword <String> --input.signOutOtherSessions <Boolean>
 ```

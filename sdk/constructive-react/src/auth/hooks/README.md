@@ -115,7 +115,7 @@ function App() {
 | `useCompleteMfaChallengeMutation` | Mutation | completeMfaChallenge |
 | `useConfirmDeleteAccountMutation` | Mutation | confirmDeleteAccount |
 | `useConfirmTotpSetupMutation` | Mutation | confirmTotpSetup |
-| `useCreateApiKeyMutation` | Mutation | createApiKey |
+| `useCreateApiKeyMutation` | Mutation | Mint an API key for the current user; the plaintext key is returned once. access_level: full_access (default) or read_only. mfa_level: none (default) or verified; verified needs a fresh MFA proof on the calling session. A key minted while authenticated by another API key never outlives that key. |
 | `useCreateChildPrincipalMutation` | Mutation | createChildPrincipal |
 | `useCreateOrgApiKeyMutation` | Mutation | createOrgApiKey |
 | `useCreateOrgPrincipalMutation` | Mutation | createOrgPrincipal |
@@ -129,6 +129,7 @@ function App() {
 | `useEnableEmailMfaMutation` | Mutation | enableEmailMfa |
 | `useEnableSmsMfaMutation` | Mutation | enableSmsMfa |
 | `useEnableTotpMutation` | Mutation | enableTotp |
+| `useExchangeNativeHandoffMutation` | Mutation | exchangeNativeHandoff |
 | `useExtendTokenExpiresMutation` | Mutation | extendTokenExpires |
 | `useForgotPasswordMutation` | Mutation | forgotPassword |
 | `useGenerateBackupCodesMutation` | Mutation | generateBackupCodes |
@@ -587,7 +588,7 @@ confirmTotpSetup
 
 ### `useCreateApiKeyMutation`
 
-createApiKey
+Mint an API key for the current user; the plaintext key is returned once. access_level: full_access (default) or read_only. mfa_level: none (default) or verified; verified needs a fresh MFA proof on the calling session. A key minted while authenticated by another API key never outlives that key.
 
 - **Type:** mutation
 - **Arguments:**
@@ -738,6 +739,17 @@ enableTotp
   | Argument | Type |
   |----------|------|
   | `input` | EnableTotpInput (required) |
+
+### `useExchangeNativeHandoffMutation`
+
+exchangeNativeHandoff
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `input` | ExchangeNativeHandoffInput (required) |
 
 ### `useExtendTokenExpiresMutation`
 

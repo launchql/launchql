@@ -7,7 +7,7 @@ React Query mutation hook for setPassword
 ## Usage
 
 ```typescript
-const { mutate } = useSetPasswordMutation(); mutate({ input: { currentPassword: '<String>', newPassword: '<String>' } });
+const { mutate } = useSetPasswordMutation(); mutate({ input: { currentPassword: '<String>', newPassword: '<String>', signOutOtherSessions: '<Boolean>' } });
 ```
 
 ## Examples
@@ -16,5 +16,5 @@ const { mutate } = useSetPasswordMutation(); mutate({ input: { currentPassword: 
 
 ```typescript
 const { mutate, isLoading } = useSetPasswordMutation();
-mutate({ input: { currentPassword: '<String>', newPassword: '<String>' } });
+mutate({ input: { currentPassword: '<String>', newPassword: '<String>', signOutOtherSessions: '<Boolean>' } });
 ```

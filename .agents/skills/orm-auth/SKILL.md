@@ -1,13 +1,13 @@
 ---
 name: orm-auth
-description: ORM client for the auth API — provides typed CRUD operations for 15 tables and 61 custom operations
+description: ORM client for the auth API — provides typed CRUD operations for 15 tables and 62 custom operations
 ---
 
 # orm-auth
 
 <!-- @constructive-io/graphql-codegen - DO NOT EDIT -->
 
-ORM client for the auth API — provides typed CRUD operations for 15 tables and 61 custom operations
+ORM client for the auth API — provides typed CRUD operations for 15 tables and 62 custom operations
 
 ## Usage
 
@@ -77,6 +77,7 @@ See the `references/` directory for detailed per-entity API documentation:
 - [enable-email-mfa](references/enable-email-mfa.md)
 - [enable-sms-mfa](references/enable-sms-mfa.md)
 - [enable-totp](references/enable-totp.md)
+- [exchange-native-handoff](references/exchange-native-handoff.md)
 - [extend-token-expires](references/extend-token-expires.md)
 - [forgot-password](references/forgot-password.md)
 - [generate-backup-codes](references/generate-backup-codes.md)

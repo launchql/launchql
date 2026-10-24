@@ -7,7 +7,7 @@ Execute the requestMagicLink mutation
 ## Usage
 
 ```typescript
-db.mutation.requestMagicLink({ input: { email: '<String>', next: '<String>' } }).execute()
+db.mutation.requestMagicLink({ input: { codeChallenge: '<String>', email: '<String>', nativeRedirectUri: '<String>', next: '<String>' } }).execute()
 ```
 
 ## Examples
@@ -15,5 +15,5 @@ db.mutation.requestMagicLink({ input: { email: '<String>', next: '<String>' } })
 ### Run requestMagicLink
 
 ```typescript
-const result = await db.mutation.requestMagicLink({ input: { email: '<String>', next: '<String>' } }).execute();
+const result = await db.mutation.requestMagicLink({ input: { codeChallenge: '<String>', email: '<String>', nativeRedirectUri: '<String>', next: '<String>' } }).execute();
 ```

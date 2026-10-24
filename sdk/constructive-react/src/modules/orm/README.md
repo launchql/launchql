@@ -498,6 +498,7 @@ CRUD operations for BlueprintConstruction records.
 | `constructedDefinition` | JSON | Yes |
 | `createdAt` | Datetime | No |
 | `databaseId` | UUID | Yes |
+| `error` | JSON | Yes |
 | `id` | UUID | No |
 | `schemaId` | UUID | Yes |
 | `status` | String | Yes |
@@ -508,13 +509,13 @@ CRUD operations for BlueprintConstruction records.
 
 ```typescript
 // List all blueprintConstruction records
-const items = await db.blueprintConstruction.findMany({ select: { blueprintId: true, constructedAt: true, constructedDefinition: true, createdAt: true, databaseId: true, id: true, schemaId: true, status: true, tableMap: true, updatedAt: true } }).execute();
+const items = await db.blueprintConstruction.findMany({ select: { blueprintId: true, constructedAt: true, constructedDefinition: true, createdAt: true, databaseId: true, error: true, id: true, schemaId: true, status: true, tableMap: true, updatedAt: true } }).execute();
 
 // Get one by id
-const item = await db.blueprintConstruction.findOne({ id: '<UUID>', select: { blueprintId: true, constructedAt: true, constructedDefinition: true, createdAt: true, databaseId: true, id: true, schemaId: true, status: true, tableMap: true, updatedAt: true } }).execute();
+const item = await db.blueprintConstruction.findOne({ id: '<UUID>', select: { blueprintId: true, constructedAt: true, constructedDefinition: true, createdAt: true, databaseId: true, error: true, id: true, schemaId: true, status: true, tableMap: true, updatedAt: true } }).execute();
 
 // Create
-const created = await db.blueprintConstruction.create({ data: { blueprintId: '<UUID>', constructedAt: '<Datetime>', constructedDefinition: '<JSON>', databaseId: '<UUID>', schemaId: '<UUID>', status: '<String>', tableMap: '<JSON>' }, select: { id: true } }).execute();
+const created = await db.blueprintConstruction.create({ data: { blueprintId: '<UUID>', constructedAt: '<Datetime>', constructedDefinition: '<JSON>', databaseId: '<UUID>', error: '<JSON>', schemaId: '<UUID>', status: '<String>', tableMap: '<JSON>' }, select: { id: true } }).execute();
 
 // Update
 const updated = await db.blueprintConstruction.update({ where: { id: '<UUID>' }, data: { blueprintId: '<UUID>' }, select: { id: true } }).execute();
@@ -1416,18 +1417,19 @@ CRUD operations for DomainModule records.
 | `publicSchemaName` | String | Yes |
 | `schemaId` | UUID | Yes |
 | `scope` | String | Yes |
+| `sweepUnverifiedDomainsFunction` | String | Yes |
 
 **Operations:**
 
 ```typescript
 // List all domainModule records
-const items = await db.domainModule.findMany({ select: { apiName: true, catalogModuleId: true, databaseId: true, defaultCapabilities: true, domainEventsTableId: true, domainEventsTableName: true, domainVerificationsTableId: true, domainVerificationsTableName: true, domainsTableId: true, domainsTableName: true, entityField: true, entityTableId: true, id: true, managedDomainsTableId: true, managedDomainsTableName: true, policies: true, prefix: true, privateApiName: true, privateSchemaId: true, privateSchemaName: true, provisions: true, publicSchemaName: true, schemaId: true, scope: true } }).execute();
+const items = await db.domainModule.findMany({ select: { apiName: true, catalogModuleId: true, databaseId: true, defaultCapabilities: true, domainEventsTableId: true, domainEventsTableName: true, domainVerificationsTableId: true, domainVerificationsTableName: true, domainsTableId: true, domainsTableName: true, entityField: true, entityTableId: true, id: true, managedDomainsTableId: true, managedDomainsTableName: true, policies: true, prefix: true, privateApiName: true, privateSchemaId: true, privateSchemaName: true, provisions: true, publicSchemaName: true, schemaId: true, scope: true, sweepUnverifiedDomainsFunction: true } }).execute();
 
 // Get one by id
-const item = await db.domainModule.findOne({ id: '<UUID>', select: { apiName: true, catalogModuleId: true, databaseId: true, defaultCapabilities: true, domainEventsTableId: true, domainEventsTableName: true, domainVerificationsTableId: true, domainVerificationsTableName: true, domainsTableId: true, domainsTableName: true, entityField: true, entityTableId: true, id: true, managedDomainsTableId: true, managedDomainsTableName: true, policies: true, prefix: true, privateApiName: true, privateSchemaId: true, privateSchemaName: true, provisions: true, publicSchemaName: true, schemaId: true, scope: true } }).execute();
+const item = await db.domainModule.findOne({ id: '<UUID>', select: { apiName: true, catalogModuleId: true, databaseId: true, defaultCapabilities: true, domainEventsTableId: true, domainEventsTableName: true, domainVerificationsTableId: true, domainVerificationsTableName: true, domainsTableId: true, domainsTableName: true, entityField: true, entityTableId: true, id: true, managedDomainsTableId: true, managedDomainsTableName: true, policies: true, prefix: true, privateApiName: true, privateSchemaId: true, privateSchemaName: true, provisions: true, publicSchemaName: true, schemaId: true, scope: true, sweepUnverifiedDomainsFunction: true } }).execute();
 
 // Create
-const created = await db.domainModule.create({ data: { apiName: '<String>', catalogModuleId: '<UUID>', databaseId: '<UUID>', defaultCapabilities: '<String>', domainEventsTableId: '<UUID>', domainEventsTableName: '<String>', domainVerificationsTableId: '<UUID>', domainVerificationsTableName: '<String>', domainsTableId: '<UUID>', domainsTableName: '<String>', entityField: '<String>', entityTableId: '<UUID>', managedDomainsTableId: '<UUID>', managedDomainsTableName: '<String>', policies: '<JSON>', prefix: '<String>', privateApiName: '<String>', privateSchemaId: '<UUID>', privateSchemaName: '<String>', provisions: '<JSON>', publicSchemaName: '<String>', schemaId: '<UUID>', scope: '<String>' }, select: { id: true } }).execute();
+const created = await db.domainModule.create({ data: { apiName: '<String>', catalogModuleId: '<UUID>', databaseId: '<UUID>', defaultCapabilities: '<String>', domainEventsTableId: '<UUID>', domainEventsTableName: '<String>', domainVerificationsTableId: '<UUID>', domainVerificationsTableName: '<String>', domainsTableId: '<UUID>', domainsTableName: '<String>', entityField: '<String>', entityTableId: '<UUID>', managedDomainsTableId: '<UUID>', managedDomainsTableName: '<String>', policies: '<JSON>', prefix: '<String>', privateApiName: '<String>', privateSchemaId: '<UUID>', privateSchemaName: '<String>', provisions: '<JSON>', publicSchemaName: '<String>', schemaId: '<UUID>', scope: '<String>', sweepUnverifiedDomainsFunction: '<String>' }, select: { id: true } }).execute();
 
 // Update
 const updated = await db.domainModule.update({ where: { id: '<UUID>' }, data: { apiName: '<String>' }, select: { id: true } }).execute();
@@ -4340,7 +4342,7 @@ const deleted = await db.webhookModule.delete({ where: { id: '<UUID>' } }).execu
 
 ### `db.mutation.constructBlueprint`
 
-Executes a blueprint definition by delegating to provision_* procedures. Creates a blueprint_construction record to track the attempt. Eight phases: (0) entity_type_provision for each membership_type entry — provisions entity tables, membership modules, and security. When a prefix already exists (e.g., 'org'), the entry extends the existing entity type instead of creating a new one; if a storage[] key is present, it provisions entity-scoped storage for that type. (0.5) scope-based storage: each storage[] entry has an optional scope ('app' or 'org' only). App-scoped storage seeds buckets at migration time. Org-scoped storage resolves the org membership type, creates org_buckets/org_files with owner_id, and seeds buckets per-entity via an AFTER INSERT trigger on the users table. When function_module is installed, a private functions bucket is auto-injected into org-scoped or entity-scoped storage entries. (1) provision_table() for each table with nodes[], fields[], policies[], and grants (table-level indexes/fts/unique_constraints/check_constraints are deferred). A table entry either names its table (table_name plus optional schema_name) or references one an installed module generated ("module": {"type": "agent", "scope": "org", "table": "message"}), which resolves through the module row's recorded table ids and raises when it matches nothing instead of creating an empty table. After provisioning, optional smart_tags (jsonb object) on the table entry are applied via metaschema.append_table_smart_tags(), and optional smart_tags on individual field entries are applied via metaschema.append_field_smart_tags(). (2) provision_relation() for each relation, (3) provision_index() for top-level + deferred indexes, (4) provision_full_text_search() for top-level + deferred FTS, (5) provision_unique_constraint() for top-level + deferred unique constraints, (6) provision_check_constraint() for top-level + deferred check constraints, (7) seed achievements from definition.achievements[] — resolves events_module by entity_prefix and creates INSERT actions for levels, level_requirements, and achievement_rewards tables. Phase 0 entity tables are added to the table_map so subsequent phases can reference them by name. Table-level entries are deferred to phases 3-6 so they can reference columns created by relations in phase 2. Returns the construction record ID. A failure raises its coded error to the caller and rolls back the whole construction, including the construction record.
+Requests a build of a blueprint: snapshots its definition into a pending blueprint_construction row, enqueues the blueprint:construct job that runs metaschema_private.construct_blueprint_run on it, and returns the construction id immediately. Poll the row: pending -> constructing -> constructed (table_map populated) or failed (error holds the coded error). schema_id is the default schema for tables without an explicit schema_name.
 
 - **Type:** mutation
 - **Arguments:**

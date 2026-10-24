@@ -15,7 +15,9 @@ export default async (
 ) => {
   try {
     if (argv.help || argv.h) {
-      console.log('create-api-key - createApiKey\n\nUsage: create-api-key [OPTIONS]\n');
+      console.log(
+        'create-api-key - Mint an API key for the current user; the plaintext key is returned once. access_level: full_access (default) or read_only. mfa_level: none (default) or verified; verified needs a fresh MFA proof on the calling session. A key minted while authenticated by another API key never outlives that key.\n\nUsage: create-api-key [OPTIONS]\n'
+      );
       process.exit(0);
     }
     const answers = await prompter.prompt(argv, [

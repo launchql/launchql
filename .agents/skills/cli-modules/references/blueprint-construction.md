@@ -12,8 +12,8 @@ csdk blueprint-construction list --where.<field>.<op> <value> --orderBy <values>
 csdk blueprint-construction list --limit 10 --after <cursor>
 csdk blueprint-construction find-first --where.<field>.<op> <value>
 csdk blueprint-construction get --id <UUID>
-csdk blueprint-construction create --blueprintId <UUID> --databaseId <UUID> [--constructedAt <Datetime>] [--constructedDefinition <JSON>] [--schemaId <UUID>] [--status <String>] [--tableMap <JSON>]
-csdk blueprint-construction update --id <UUID> [--blueprintId <UUID>] [--constructedAt <Datetime>] [--constructedDefinition <JSON>] [--databaseId <UUID>] [--schemaId <UUID>] [--status <String>] [--tableMap <JSON>]
+csdk blueprint-construction create --blueprintId <UUID> --databaseId <UUID> [--constructedAt <Datetime>] [--constructedDefinition <JSON>] [--error <JSON>] [--schemaId <UUID>] [--status <String>] [--tableMap <JSON>]
+csdk blueprint-construction update --id <UUID> [--blueprintId <UUID>] [--constructedAt <Datetime>] [--constructedDefinition <JSON>] [--databaseId <UUID>] [--error <JSON>] [--schemaId <UUID>] [--status <String>] [--tableMap <JSON>]
 csdk blueprint-construction delete --id <UUID>
 ```
 
@@ -58,7 +58,7 @@ csdk blueprint-construction list --where.id.equalTo <value> --orderBy ID_ASC
 ### Create a blueprintConstruction
 
 ```bash
-csdk blueprint-construction create --blueprintId <UUID> --databaseId <UUID> [--constructedAt <Datetime>] [--constructedDefinition <JSON>] [--schemaId <UUID>] [--status <String>] [--tableMap <JSON>]
+csdk blueprint-construction create --blueprintId <UUID> --databaseId <UUID> [--constructedAt <Datetime>] [--constructedDefinition <JSON>] [--error <JSON>] [--schemaId <UUID>] [--status <String>] [--tableMap <JSON>]
 ```
 
 ### Get a blueprintConstruction by id
