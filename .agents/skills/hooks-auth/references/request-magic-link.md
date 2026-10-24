@@ -7,7 +7,7 @@ React Query mutation hook for requestMagicLink
 ## Usage
 
 ```typescript
-const { mutate } = useRequestMagicLinkMutation(); mutate({ input: { email: '<String>', next: '<String>' } });
+const { mutate } = useRequestMagicLinkMutation(); mutate({ input: { codeChallenge: '<String>', email: '<String>', nativeRedirectUri: '<String>', next: '<String>' } });
 ```
 
 ## Examples
@@ -16,5 +16,5 @@ const { mutate } = useRequestMagicLinkMutation(); mutate({ input: { email: '<Str
 
 ```typescript
 const { mutate, isLoading } = useRequestMagicLinkMutation();
-mutate({ input: { email: '<String>', next: '<String>' } });
+mutate({ input: { codeChallenge: '<String>', email: '<String>', nativeRedirectUri: '<String>', next: '<String>' } });
 ```

@@ -52,7 +52,7 @@ csdk auth set-token <your-token>
 | `complete-mfa-challenge` | completeMfaChallenge |
 | `confirm-delete-account` | confirmDeleteAccount |
 | `confirm-totp-setup` | confirmTotpSetup |
-| `create-api-key` | createApiKey |
+| `create-api-key` | Mint an API key for the current user; the plaintext key is returned once. access_level: full_access (default) or read_only. mfa_level: none (default) or verified; verified needs a fresh MFA proof on the calling session. A key minted while authenticated by another API key never outlives that key. |
 | `create-child-principal` | createChildPrincipal |
 | `create-org-api-key` | createOrgApiKey |
 | `create-org-principal` | createOrgPrincipal |
@@ -66,6 +66,7 @@ csdk auth set-token <your-token>
 | `enable-email-mfa` | enableEmailMfa |
 | `enable-sms-mfa` | enableSmsMfa |
 | `enable-totp` | enableTotp |
+| `exchange-native-handoff` | exchangeNativeHandoff |
 | `extend-token-expires` | extendTokenExpires |
 | `forgot-password` | forgotPassword |
 | `generate-backup-codes` | generateBackupCodes |
@@ -727,7 +728,7 @@ confirmTotpSetup
 
 ### `create-api-key`
 
-createApiKey
+Mint an API key for the current user; the plaintext key is returned once. access_level: full_access (default) or read_only. mfa_level: none (default) or verified; verified needs a fresh MFA proof on the calling session. A key minted while authenticated by another API key never outlives that key.
 
 - **Type:** mutation
 - **Arguments:**
@@ -910,6 +911,20 @@ enableTotp
   |----------|------|
   | `--input.clientMutationId` | String |
 
+### `exchange-native-handoff`
+
+exchangeNativeHandoff
+
+- **Type:** mutation
+- **Arguments:**
+
+  | Argument | Type |
+  |----------|------|
+  | `--input.clientMutationId` | String |
+  | `--input.code` | String |
+  | `--input.codeVerifier` | String |
+  | `--input.credentialKind` | String |
+
 ### `extend-token-expires`
 
 extendTokenExpires
@@ -1027,7 +1042,9 @@ requestMagicLink
   | Argument | Type |
   |----------|------|
   | `--input.clientMutationId` | String |
+  | `--input.codeChallenge` | String |
   | `--input.email` | String |
+  | `--input.nativeRedirectUri` | String |
   | `--input.next` | String |
 
 ### `reset-password`
@@ -1166,6 +1183,7 @@ setPassword
   | `--input.clientMutationId` | String |
   | `--input.currentPassword` | String |
   | `--input.newPassword` | String |
+  | `--input.signOutOtherSessions` | Boolean |
 
 ### `set-principal-entities`
 
