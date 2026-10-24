@@ -34,8 +34,8 @@
     "@babel/generator": "^7.29.0",
     "@babel/types": "^7.29.0",
     "@pgsql/types": "^18.0.0",
-    "@pgsql/utils": "^18.2.14",
-    "pgsql-deparser": "^18.3.12",
+    "@pgsql/utils": "^18.3.0",
+    "pgsql-deparser": "^18.4.0",
     "schema-typescript": "^0.14.4"
   },
   "devDependencies": {

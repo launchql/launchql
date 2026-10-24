@@ -59,16 +59,16 @@
   "dependencies": {
     "@inquirerer/utils": "^3.3.13",
     "@pgpmjs/logger": "workspace:^",
-    "@pgsql/lint": "^18.2.12",
-    "@pgsql/traverse": "^18.7.14",
+    "@pgsql/lint": "^18.3.0",
+    "@pgsql/traverse": "^18.8.0",
     "@pgsql/types": "^18.0.0",
     "confstash": "^0.1.2",
     "inquirerer": "^4.9.4",
-    "libpg-query": "^18.1.4",
+    "libpg-query": "^18.2.0",
     "pg": "^8.21.0",
     "pg-env": "workspace:^",
-    "pgsql-deparser": "^18.3.12",
-    "pgsql-parser": "^18.2.12",
+    "pgsql-deparser": "^18.4.0",
+    "pgsql-parser": "^18.3.0",
     "yanse": "^0.2.2"
   },
   "peerDependencies": {
