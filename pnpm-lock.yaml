@@ -2236,6 +2236,9 @@ importers:
       '@simplewebauthn/server':
         specifier: 13.3.2
         version: 13.3.2
+      cookie-parser:
+        specifier: ^1.4.7
+        version: 1.4.7
       cors:
         specifier: ^2.8.6
         version: 2.8.6
@@ -2339,9 +2342,6 @@ importers:
       '@types/supertest':
         specifier: ^7.2.1
         version: 7.2.1
-      cookie-parser:
-        specifier: ^1.4.7
-        version: 1.4.7
       graphile-test:
         specifier: workspace:*
         version: link:../../graphile/graphile-test/dist
